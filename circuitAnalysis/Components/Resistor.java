@@ -23,5 +23,8 @@ public class Resistor extends Component{
 	public Resistor Clone(){
 		return new Resistor(resistance);
 	}
+	public String toString(){
+		return ""+resistance;
+	}
 
 }
