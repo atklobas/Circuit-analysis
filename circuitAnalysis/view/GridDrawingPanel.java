@@ -86,7 +86,6 @@ public class GridDrawingPanel extends Component implements ComponentListener{
 	
 	public void render() {
 		
-		
 		if(image[currentImage%image.length]==null){
 			image[currentImage%image.length]=this.createVolatileImage(this.getWidth(), this.getHeight());
 		}
@@ -197,6 +196,15 @@ public class GridDrawingPanel extends Component implements ComponentListener{
 			
 		}
 		
+	}
+
+	public int getCenterX() {
+		// TODO Auto-generated method stub
+		return x;
+	}
+	public int getCenterY() {
+		// TODO Auto-generated method stub
+		return y;
 	}
 		
 }

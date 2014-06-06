@@ -17,4 +17,9 @@ public class VoltageSource extends Component{
 		// TODO Auto-generated method stub
 		return VoltageSource.sprite;
 	}
+	@Override
+	public Component Clone() {
+		// TODO Auto-generated method stub
+		return new VoltageSource();
+	}
 }

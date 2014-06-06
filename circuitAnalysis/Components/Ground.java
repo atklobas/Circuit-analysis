@@ -11,4 +11,9 @@ public class Ground extends Component{
 	public Sprite getSprite() {
 		return Ground.sprite;
 	}
+	@Override
+	public Component Clone() {
+		// TODO Auto-generated method stub
+		return new Ground();
+	}
 }
