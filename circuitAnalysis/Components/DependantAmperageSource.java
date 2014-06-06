@@ -12,4 +12,10 @@ public class DependantAmperageSource extends Component{
 	public Sprite getSprite() {
 		return DependantAmperageSource.sprite;
 	}
+
+	@Override
+	public Component Clone() {
+		// TODO Auto-generated method stub
+		return new DependantAmperageSource();
+	}
 }

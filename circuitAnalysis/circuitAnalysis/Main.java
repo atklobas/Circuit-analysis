@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import Commands.Command;
+import Commands.CommandListener;
 import Components.AmperageSource;
 import Components.Component;
 import Components.DependantAmperageSource;
@@ -32,9 +33,8 @@ import view.CircuitFrame;
 import view.GridDrawingPanel;
 import view.LoadingWindow;
 
-public class Main {
+public class Main implements Model, CommandListener{
 	public static final int gridSize = 10;
-
 	int x, y;//location of the viewport;
 	//GridDrawingPanel panel = new GridDrawingPanel( gridSize);
 	//JFrame frame;
@@ -56,11 +56,11 @@ public class Main {
 		graphics = new ResourceLoader().LoadImageResource("graphics.png");
 		loading.update(800, "Cropping Sprites...");
 		sprites.put("Resistor", graphics.createSprite(32, 13, 58, 13, 3, 7));
-		sprites.put("Op Amp", graphics.createSprite(24,76,90,70,4,15,90));
+		sprites.put("Op Amp", graphics.createSprite(24,76,90,70,4,15));
 		sprites.put("Voltage Source", graphics.createSprite(144,4,68,47,3,22));
 		sprites.put("Amperage Source", graphics.createSprite(144,132,68,47,3,22));
-		sprites.put("Dependant Voltage Source", graphics.createSprite(144,201,68,47,3,22));
-		sprites.put("Dependant Amperage Source", graphics.createSprite(144,249,68,47,3,22));
+		sprites.put("Dependant Voltage Source", graphics.createSprite(144,201,68,47,3,17));
+		sprites.put("Dependant Amperage Source", graphics.createSprite(144,249,68,47,3,17));
 		sprites.put("Ground", graphics.createSprite(27,182,15,26,8,3));
 		Resistor.setSprite(sprites.get("Resistor"));
 		OpAmp.setSprite(sprites.get("Op Amp"));
@@ -71,7 +71,8 @@ public class Main {
 		Ground.setSprite(sprites.get("Ground"));
 		loading.update(900, "Initializing Display");
 		
-		CircuitFrame frame =new CircuitFrame(gridSize);
+		CircuitFrame frame =new CircuitFrame(this);
+		frame.setRenderingList(this.components);
 		Component c=new Resistor();
 		frame.addAvaliableComponent(c);
 		c=new OpAmp();
@@ -86,9 +87,18 @@ public class Main {
 		frame.addAvaliableComponent(c);
 		c=new Ground();
 		frame.addAvaliableComponent(c);
-		
+		frame.addCommandListener(this);
 		loading.dispose();
 
+	}
+	public void addComponent(Component c){
+		this.components.add(c);
+	}
+	public void removeComponent(Component c){
+		this.components.remove(c);
+	}
+	public int getGridSize(){
+		return Main.gridSize;
 	}
 
 	public static void main(String[] args) {
@@ -103,7 +113,30 @@ public class Main {
 				}
 			}
 		});
-
+	}
+	@Override
+	public void performCommand(Command c) {
+		c.execute(this);
+		commands.push(c);
+		undone.clear();
+	}
+	@Override
+	public void undoLastCommand() {
+		if(!commands.isEmpty()){
+			Command temp= commands.pop();
+			temp.undo(this);
+			this.undone.push(temp);
+		}
+		
+	}
+	@Override
+	public void redoLastCommand() {
+		if(!undone.isEmpty()){
+			Command temp= undone.pop();
+			temp.execute(this);;
+			this.commands.push(temp);
+		}
+		
 	}
 	
 	

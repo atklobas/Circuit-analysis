@@ -11,4 +11,9 @@ public class DependantVoltageSource extends Component{
 	public Sprite getSprite() {
 		return DependantVoltageSource.sprite;
 	}
+	@Override
+	public Component Clone() {
+		// TODO Auto-generated method stub
+		return new DependantVoltageSource();
+	}
 }

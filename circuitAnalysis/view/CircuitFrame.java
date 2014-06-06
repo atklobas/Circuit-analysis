@@ -2,6 +2,8 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -9,25 +11,30 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import circuitAnalysis.Model;
 import resources.Renderable;
 import Commands.Command;
 import Commands.CommandListener;
+import Commands.PlaceComponent;
 import Components.Component;
 
 public class CircuitFrame extends JFrame{
 	ComponentPanel panel=new ComponentPanel();
 	GridDrawingPanel canvas;
 	DNDListener listener=new DNDListener();
+	private Model m;
+	
 	private ArrayList<CommandListener> cmdListeners= new ArrayList<CommandListener>();
 	private CircuitFrame frame=this;
-	public CircuitFrame(int gridSize){
+	public CircuitFrame(Model m){
+		this.m=m;
 		this.setSize(800, 600);
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		this.addKeyListener(new KeyInput());
 		panel.addMouseListener(listener);
 		
-		canvas=new GridDrawingPanel(gridSize);
+		canvas=new GridDrawingPanel(m.getGridSize());
 		
 		this.add(BorderLayout.WEST,panel);
 		this.add(BorderLayout.CENTER,canvas);
@@ -44,13 +51,17 @@ public class CircuitFrame extends JFrame{
 	 * @param rendered a list containing everything to be drawn
 	 */
 	public void setRenderingList(List<Renderable> rendered){
+		System.out.println("setting rendering list");
 		this.canvas.setRenderingList(rendered);
 	}
 	public void addCommandListener(CommandListener l){
-		
+		cmdListeners.add(l);
 	}
 	private void fireCommand(Command c){
-		
+		for(CommandListener l: cmdListeners){
+			l.performCommand(c);
+		}
+		this.repaint();
 	}
 	
 	
@@ -77,11 +88,41 @@ public class CircuitFrame extends JFrame{
 		public void mouseReleased(MouseEvent e) {
 			if(current!=null){
 				Point p=canvas.getLocationOnScreen();
-				int x=e.getXOnScreen()-p.x;
-				int y=e.getYOnScreen()-p.y;
+				int x=e.getXOnScreen()-p.x+canvas.getCenterX();
+				int y=e.getYOnScreen()-p.y+canvas.getCenterY();
+				fireCommand(new PlaceComponent(x,y,current));
 				System.out.println("place "+current+" at ("+x+","+y+")");
 			}
 			current=null;
+		}
+	}
+	private class KeyInput implements KeyListener{
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if(e.isControlDown()){
+				switch(e.getKeyCode()){
+				case KeyEvent.VK_Z:
+					m.undoLastCommand();
+					break;
+				case KeyEvent.VK_Y:
+					m.redoLastCommand();
+					break;
+				}
+			}
+			repaint();
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
 		}
 		
 	}

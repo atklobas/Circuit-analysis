@@ -14,4 +14,11 @@ public class AmperageSource extends Component{
 		return AmperageSource.sprite;
 	}
 
+
+	@Override
+	public Component Clone() {
+		// TODO Auto-generated method stub
+		return new AmperageSource();
+	}
+
 }

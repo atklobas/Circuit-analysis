@@ -13,4 +13,11 @@ public class OpAmp extends Component{
 	public Sprite getSprite() {
 		return OpAmp.sprite;
 	}
+
+
+	@Override
+	public Component Clone() {
+		// TODO Auto-generated method stub
+		return new OpAmp();
+	}
 }
