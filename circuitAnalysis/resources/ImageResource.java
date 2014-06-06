@@ -52,6 +52,12 @@ public class ImageResource{
 		}
 	}
 	
+	public Sprite createSprite(int x, int y, int width, int height,int offsetX, int offsetY,int rotation) {
+		return new Sprite(x,y,width,height,offsetX,offsetY,Math.toRadians(rotation),this);
+	}
+	public Sprite createSprite(int x, int y, int width, int height,int offsetX, int offsetY,double rotation) {
+		return new Sprite(x,y,width,height,offsetX,offsetY,rotation,this);
+	}
 	public Sprite createSprite(int x, int y, int width, int height,int offsetX, int offsetY) {
 		return new Sprite(x,y,width,height,offsetX,offsetY,this);
 	}

@@ -47,8 +47,8 @@ public class Main implements MouseListener, MouseMotionListener, KeyListener,Run
 		graphics = new ResourceLoader().LoadImageResource("graphics.png");
 		//graphics.setTransparent(0, 0);
 		sprites.put("Resistor", graphics.createSprite(32, 13, 58, 13, 3, 7));
-		//sprites.put("Resistor", graphics.createSprite(32, 13, 58, 13, 0, 0));
-		
+		sprites.put("Op Amp", graphics.createSprite(24,76,90,70,4,15,90));
+		sprites.put("Voltage Source", graphics.createSprite(144,4,210,47,3,22));
 		Resistor.setSprite(sprites.get("Resistor"));
 		Resistor r=new Resistor(100);
 		components.add(r);
@@ -158,7 +158,10 @@ public class Main implements MouseListener, MouseMotionListener, KeyListener,Run
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch(Exception e){
+				
 			}
+			//don't even worry abou it
 		}
 		
 	}

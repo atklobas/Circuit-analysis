@@ -11,13 +11,13 @@ public class Sprite{
 	ImageResource resource;
 	
 
-	public Sprite(int x, int y, int width, int height, ImageResource resource) {
+	Sprite(int x, int y, int width, int height, ImageResource resource) {
 		
 		this(x,y,width,height,0,0,resource);
 		
 	}
 
-	public Sprite(int x, int y, int width, int height, int offsetX, int offsetY,double rotation, ImageResource resource) {
+	Sprite(int x, int y, int width, int height, int offsetX, int offsetY,double rotation, ImageResource resource) {
 		this.x=x;
 		this.y=y;
 		this.width=width;
@@ -27,7 +27,7 @@ public class Sprite{
 		this.resource=resource;
 		this.rotation=rotation;
 	}
-	public Sprite(int x, int y, int width, int height, int offsetX, int offsetY, ImageResource resource) {
+	Sprite(int x, int y, int width, int height, int offsetX, int offsetY, ImageResource resource) {
 		this(x,y,width,height,offsetX,offsetY,0,resource);
 	}
 
@@ -162,11 +162,11 @@ public class Sprite{
 	}
 
 	public void draw(Graphics2D g, int x, int y, double scale) {
-		//g.translate(x-(int)(offsetX*scale), y-(int)(offsetY*scale));
-		//g.scale(scale, scale);
-		//if(rotation!=0)
-		//	g.rotate(rotation,offsetX*scale,offsetY*scale);
-		resource.draw(g,this,x-(int)(offsetX*scale), y-(int)(offsetY*scale),(int)(width),(int)(height));
+		g.translate(x-(int)(offsetX*scale), y-(int)(offsetY*scale));
+		g.scale(scale, scale);
+		if(rotation!=0)
+			g.rotate(rotation,offsetX*scale,offsetY*scale);
+		resource.draw(g,this,0,0,(int)(width),(int)(height));
 	}
 	
 
