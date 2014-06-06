@@ -2,16 +2,13 @@ package Components;
 
 import resources.Sprite;
 
-public class AmperageSource extends Component{
+public class DependantVoltageSource extends Component{
 	private static Sprite sprite;
 	public static void setSprite(Sprite sprite){
-		AmperageSource.sprite=sprite;
+		DependantVoltageSource.sprite=sprite;
 	}
-
-
 	@Override
 	public Sprite getSprite() {
-		return AmperageSource.sprite;
+		return DependantVoltageSource.sprite;
 	}
-
 }

@@ -5,3 +5,6 @@
 /VoltageSource.class
 /Wire.class
 /OpAmp.class
+/DependantVoltageSource.class
+/DependantAmperageSource.class
+/Ground.class

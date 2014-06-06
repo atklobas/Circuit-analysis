@@ -2,16 +2,13 @@ package Components;
 
 import resources.Sprite;
 
-public class AmperageSource extends Component{
+public class Ground extends Component{
 	private static Sprite sprite;
 	public static void setSprite(Sprite sprite){
-		AmperageSource.sprite=sprite;
+		Ground.sprite=sprite;
 	}
-
-
 	@Override
 	public Sprite getSprite() {
-		return AmperageSource.sprite;
+		return Ground.sprite;
 	}
-
 }

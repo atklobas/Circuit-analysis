@@ -4,8 +4,10 @@ package view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import resources.Sprite;
@@ -13,23 +15,33 @@ import Components.Component;
 
 public class ComponentPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
+	ArrayList<ComponentPane> components= new ArrayList<ComponentPane>();
+	ArrayList<MouseListener> listeners= new ArrayList<MouseListener>();
+	
+	
 	public ComponentPanel(){
 		Dimension pref=new Dimension(200,-1);
 		this.setPreferredSize(pref);
 	}
 	
 	public void addAvaliableComponent(Component p) {
-		this.add(new ComponentPane(p));
-		
+		ComponentPane temp=new ComponentPane(p);
+		for(MouseListener l:listeners){
+			temp.addMouseListener(l);
+		}
+		components.add(temp);
+		this.add(temp);
+	}
+	
+	public void addMouseListener(MouseListener l){
+		for(ComponentPane p:components){
+			p.addMouseListener(l);
+		}
+		listeners.add(l);
 	}
 	
 	
-	
-	
-	
-	
-	
-	private class ComponentPane extends java.awt.Component{
+	static class ComponentPane extends java.awt.Component{
 		private static final long serialVersionUID = 1L;
 		private int width=95,height=95;
 		private Component c;
@@ -41,6 +53,9 @@ public class ComponentPanel extends JPanel{
 			this.setMaximumSize(d);
 			this.setMinimumSize(d);
 			this.setSize(d);
+		}
+		public Component getComponent(){
+			return c;
 		}
 		
 		public void paint(Graphics g){
@@ -58,9 +73,13 @@ public class ComponentPanel extends JPanel{
 		public void update(Graphics g){
 			this.paint(g);
 		}
+		public String toString(){
+			return c.getClass().getName();
+		}
 		
 		
 	}
+	
 
 
 

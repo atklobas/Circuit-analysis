@@ -4,3 +4,6 @@
 /ComponentPanel$ComponentPane.class
 /CircuitFrame.class
 /GridDrawingPanel$LocationUpdater.class
+/ComponentPanel$dndListener.class
+/CircuitFrame$dndListener.class
+/CircuitFrame$DNDListener.class

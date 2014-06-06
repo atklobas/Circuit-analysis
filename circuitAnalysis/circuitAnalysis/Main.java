@@ -16,7 +16,11 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import Commands.Command;
+import Components.AmperageSource;
 import Components.Component;
+import Components.DependantAmperageSource;
+import Components.DependantVoltageSource;
+import Components.Ground;
 import Components.OpAmp;
 import Components.Resistor;
 import Components.VoltageSource;
@@ -54,11 +58,17 @@ public class Main {
 		sprites.put("Resistor", graphics.createSprite(32, 13, 58, 13, 3, 7));
 		sprites.put("Op Amp", graphics.createSprite(24,76,90,70,4,15,90));
 		sprites.put("Voltage Source", graphics.createSprite(144,4,68,47,3,22));
-		
+		sprites.put("Amperage Source", graphics.createSprite(144,132,68,47,3,22));
+		sprites.put("Dependant Voltage Source", graphics.createSprite(144,201,68,47,3,22));
+		sprites.put("Dependant Amperage Source", graphics.createSprite(144,249,68,47,3,22));
+		sprites.put("Ground", graphics.createSprite(27,182,15,26,8,3));
 		Resistor.setSprite(sprites.get("Resistor"));
 		OpAmp.setSprite(sprites.get("Op Amp"));
 		VoltageSource.setSprite(sprites.get("Voltage Source"));
-		
+		AmperageSource.setSprite(sprites.get("Amperage Source"));
+		DependantVoltageSource.setSprite(sprites.get("Dependant Voltage Source"));
+		DependantAmperageSource.setSprite(sprites.get("Dependant Amperage Source"));
+		Ground.setSprite(sprites.get("Ground"));
 		loading.update(900, "Initializing Display");
 		
 		CircuitFrame frame =new CircuitFrame(gridSize);
@@ -68,10 +78,14 @@ public class Main {
 		frame.addAvaliableComponent(c);
 		c=new VoltageSource();
 		frame.addAvaliableComponent(c);
-		
-		
-		
-
+		c=new AmperageSource();
+		frame.addAvaliableComponent(c);
+		c=new DependantVoltageSource();
+		frame.addAvaliableComponent(c);
+		c=new DependantAmperageSource();
+		frame.addAvaliableComponent(c);
+		c=new Ground();
+		frame.addAvaliableComponent(c);
 		
 		loading.dispose();
 
