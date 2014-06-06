@@ -1,13 +1,18 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
 
@@ -21,7 +26,7 @@ import Components.Component;
 public class CircuitFrame extends JFrame{
 	ComponentPanel panel=new ComponentPanel();
 	GridDrawingPanel canvas;
-	DNDListener listener=new DNDListener();
+	DNDListener dndl=new DNDListener();
 	private Model m;
 	
 	private ArrayList<CommandListener> cmdListeners= new ArrayList<CommandListener>();
@@ -32,7 +37,8 @@ public class CircuitFrame extends JFrame{
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.addKeyListener(new KeyInput());
-		panel.addMouseListener(listener);
+		panel.addMouseListener(dndl);
+		panel.addMouseMotionListener(dndl);
 		
 		canvas=new GridDrawingPanel(m.getGridSize());
 		
@@ -45,13 +51,28 @@ public class CircuitFrame extends JFrame{
 	public void addAvaliableComponent(Component p){
 		panel.addAvaliableComponent(p);
 	}
+	public void innerPaint(Graphics g){
+		if(dndl.current!=null){
+			Point p=MouseInfo.getPointerInfo().getLocation() ;
+			dndl.current.getSprite().draw(((Graphics2D)g), p.x, p.y, 1.);
+		}
+	}
+	
+	public void paint(Graphics g){
+		super.paint(g);
+		innerPaint(g);
+	}
+	public void update(Graphics g){
+		super.update(g);
+		innerPaint(g);
+	}
+	
 	/**
 	 * This method sets the list of components this panel will draw, 
 	 * the list will never be modified by this class
 	 * @param rendered a list containing everything to be drawn
 	 */
 	public void setRenderingList(List<Renderable> rendered){
-		System.out.println("setting rendering list");
 		this.canvas.setRenderingList(rendered);
 	}
 	public void addCommandListener(CommandListener l){
@@ -65,7 +86,7 @@ public class CircuitFrame extends JFrame{
 	}
 	
 	
-	private class DNDListener implements MouseListener{
+	private class DNDListener implements MouseListener, MouseMotionListener{
 		Component current=null;
 		@Override
 		public void mouseClicked(MouseEvent arg0) {}
@@ -94,6 +115,18 @@ public class CircuitFrame extends JFrame{
 				System.out.println("place "+current+" at ("+x+","+y+")");
 			}
 			current=null;
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent arg0) {
+			repaint();
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent arg0) {
+
+			
 		}
 	}
 	private class KeyInput implements KeyListener{
@@ -127,4 +160,5 @@ public class CircuitFrame extends JFrame{
 		
 	}
 
+	
 }

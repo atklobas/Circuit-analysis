@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -16,7 +17,7 @@ public class ComponentPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	ArrayList<ComponentPane> components= new ArrayList<ComponentPane>();
 	ArrayList<MouseListener> listeners= new ArrayList<MouseListener>();
-	
+	ArrayList<MouseMotionListener> mlisteners= new ArrayList<MouseMotionListener>();
 	
 	public ComponentPanel(){
 		Dimension pref=new Dimension(200,-1);
@@ -28,6 +29,9 @@ public class ComponentPanel extends JPanel{
 		for(MouseListener l:listeners){
 			temp.addMouseListener(l);
 		}
+		for(MouseMotionListener l:mlisteners){
+			temp.addMouseMotionListener(l);
+		}
 		components.add(temp);
 		this.add(temp);
 	}
@@ -37,6 +41,12 @@ public class ComponentPanel extends JPanel{
 			p.addMouseListener(l);
 		}
 		listeners.add(l);
+	}
+	public void addMouseMotionListener(MouseMotionListener l){
+		for(ComponentPane p:components){
+			p.addMouseMotionListener(l);
+		}
+		mlisteners.add(l);
 	}
 	
 	
