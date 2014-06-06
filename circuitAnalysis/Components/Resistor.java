@@ -8,12 +8,12 @@ public class Resistor extends Component{
 		Resistor.sprite=sprite;
 	}
 	private int resistance;
-	
+	public Resistor(){
+		this(100);
+	}
 	public Resistor(int resistance) {
 		this.resistance=resistance;
 	}
-
-	
 
 	@Override
 	public Sprite getSprite() {

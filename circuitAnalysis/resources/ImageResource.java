@@ -93,14 +93,6 @@ public class ImageResource{
 			g.drawImage(presistent,x,y,x+width,y+height,s.x,s.y,s.x+s.width,s.y+s.height,null);
 		
 	}
-	public void draw(Graphics g, Sprite s,int x, int y) {
-		//don't even worry about it... really
-		if(this.accelerated){
-			ensureImage();
-			g.drawImage(image,s.x,s.y,s.x+s.width,s.y+s.height,null);
-		}else;
-			g.drawImage(presistent,s.x,s.y,s.x+s.width,s.y+s.height,null);
-	}
 	public BufferedImage getImage() {
 		return this.presistent;
 	}

@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Transparency;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -16,60 +18,58 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.VolatileImage;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import resources.Renderable;
 
 
-public class GridDrawingPanel extends Component implements MouseListener, MouseMotionListener, KeyListener{
-	/**
-	 * 
-	 */
+public class GridDrawingPanel extends Component implements ComponentListener{
 	private static final long serialVersionUID = 2211479314105403140L;
-	private ArrayList<MouseListener> mouseListeners=new ArrayList<MouseListener>();
-	private ArrayList<MouseMotionListener> mouseMotionListener=new ArrayList<MouseMotionListener>();
-	private ArrayList<KeyListener> keyListeners=new ArrayList<KeyListener>();
-	int width;
-	int height;
+	
+	private LocationUpdater ml=new LocationUpdater();
 	int gridsize;
-	AffineTransform id=new AffineTransform();
-	public GridDrawingPanel(int width,int height,int gridsize){
-		super();
-		super.addMouseListener(this);
-		super.addMouseMotionListener(this);
-		super.addKeyListener(this);
-		this.gridsize=gridsize;
-		this.width=width;
-		this.height=height;
-		glassPane=this.createClearVolatileImage(width, height);
-		gg=glassPane.createGraphics();
-		this.setSize(width, height);
-		
-		this.setPreferredSize(new Dimension(width, height));
-	}
 	int currentImage=1;
 	VolatileImage[] image=new VolatileImage[4];
-	VolatileImage glassPane;
 	Graphics2D g;
-	Graphics2D gg;
+	//this list will be shared with and edited externally
+	private List<Renderable> rendered=null;
+	int x=0, y=0;
+	
+	AffineTransform id=new AffineTransform();
+	public GridDrawingPanel(int gridsize){
+		super();
+		this.gridsize=gridsize;
+		this.addComponentListener(this);
+		this.addMouseListener(ml);
+		this.addMouseMotionListener(ml);
+	}
+	public void setCenterPoint(int x, int y){
+		this.x=x;
+		this.y=y;
+		this.repaint();
+	}
+	/**
+	 * This method sets the list of components this panel will draw, 
+	 * the list will never be modified by this class
+	 * @param rendered a list containing everything to be drawn
+	 */
+	public void setRenderingList(List<Renderable> rendered){
+		this.rendered=rendered;
+		this.repaint();
+	}
+	
 	
 	
 	
 	public void paint(Graphics g){
-		this.requestFocus();
-
+		this.render();
 		g.drawImage(image[(currentImage-1)%image.length], 0, 0, this);
 		
 		
-		g.drawImage(glassPane, 0, 0, this);
-		
 	}
 	public void update(Graphics g){
-		this.requestFocus();
 		this.paint(g);
 	}
-	
 	
 	public VolatileImage createClearVolatileImage(int width, int height) {
 		VolatileImage ret= GraphicsEnvironment.getLocalGraphicsEnvironment().
@@ -82,125 +82,13 @@ public class GridDrawingPanel extends Component implements MouseListener, MouseM
 		return ret;
 	}
 	
-	public void addMouseListener(MouseListener ml){
-		this.mouseListeners.add(ml);
-	}
-	public void addMouseMotionListener(MouseMotionListener ml){
-		this.mouseMotionListener.add(ml);
-	}
 	
-	public void addKeyListener(KeyListener k){
-		this.keyListeners.add(k);
-	}
-
-
 	
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	boolean resize=false;
-
-
-	
-	public void mousePressed(MouseEvent e) {
-		if(!e.isConsumed()){
-			for(MouseListener ml:this.mouseListeners){
-				ml.mousePressed(e);
-			}
-		}
-		
-	}
-
-
-	
-	public void mouseReleased(MouseEvent e) {
-		
-		for(MouseListener ml:this.mouseListeners){
-			ml.mouseReleased(e);
-		}
-		
-	}
-
-
-	
-	public void keyPressed(KeyEvent e) {
-		for(KeyListener k:this.keyListeners){
-			if(!e.isConsumed()){
-				k.keyPressed(e);
-			}
-				
-		}
-		
-	}
-
-
-	
-	public void keyReleased(KeyEvent e) {
-		for(KeyListener k:this.keyListeners){
-			if(!e.isConsumed())
-				k.keyReleased(e);
-		}
-		
-	}
-
-
-	
-	public void keyTyped(KeyEvent e) {
-		for(KeyListener k:this.keyListeners){
-			if(!e.isConsumed())
-				k.keyTyped(e);
-		}
-		
-	}
-
-
-	
-	public void mouseDragged(MouseEvent e) {
-		if(!e.isConsumed()){
-			for(MouseMotionListener ml:this.mouseMotionListener){
-				ml.mouseDragged(e);
-			}
-		}
-		
-	}
-
-
-	
-	public void mouseMoved(MouseEvent e) {
-		if(!e.isConsumed()){
-			for(MouseMotionListener ml:this.mouseMotionListener){
-				ml.mouseMoved(e);
-			}
-		}
-		
-	}
-	public void clear(Graphics2D g2){
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-		g2.fillRect(0,0,width,height);
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-	}
-	
-	public void render(List<Renderable> rendered, int x, int y) {
+	public void render() {
 		
 		
 		if(image[currentImage%image.length]==null){
-			image[currentImage%image.length]=this.createVolatileImage(width, height);
+			image[currentImage%image.length]=this.createVolatileImage(this.getWidth(), this.getHeight());
 		}
 		
 		g=image[currentImage%image.length].createGraphics();
@@ -209,43 +97,40 @@ public class GridDrawingPanel extends Component implements MouseListener, MouseM
 			g.setTransform(id);
 			
 			g.setColor(Color.white);
-			g.fillRect(0, 0, width, height);
+			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 			g.setColor(Color.LIGHT_GRAY);
-			for(int i=0-x%gridsize, col=x/gridsize;i<width;i+=gridsize,col++){
+			for(int i=0-x%gridsize, col=x/gridsize;i<this.getWidth();i+=gridsize,col++){
 				if(col%100==0){
 					g.setColor(Color.RED);
-					g.drawLine(i, 0, i, height);
+					g.drawLine(i, 0, i, this.getHeight());
 					g.setColor(Color.LIGHT_GRAY);
 				}else if(col%10==0){
 					g.setColor(Color.GRAY);
-					g.drawLine(i, 0, i, height);
+					g.drawLine(i, 0, i, this.getHeight());
 					g.setColor(Color.LIGHT_GRAY);
 				}else
-				g.drawLine(i, 0, i, height);
+				g.drawLine(i, 0, i, this.getHeight());
 			}
-			for(int i=0-y%gridsize, row=y/gridsize;i<height;i+=gridsize,row++){
+			for(int i=0-y%gridsize, row=y/gridsize;i<this.getHeight();i+=gridsize,row++){
 				if(row%100==0){
 					g.setColor(Color.RED);
-					g.drawLine(0,i, width, i);
+					g.drawLine(0,i, this.getWidth(), i);
 					g.setColor(Color.LIGHT_GRAY);
 				}else if(row%10==0){
 					g.setColor(Color.GRAY);
-					g.drawLine(0,i, width, i);
+					g.drawLine(0,i, this.getWidth(), i);
 					g.setColor(Color.LIGHT_GRAY);
 				}else
-				g.drawLine(0,i, width, i);
+				g.drawLine(0,i, this.getWidth(), i);
 			}
-			clear(gg);
-			gg.setColor(Color.BLACK);
 			AffineTransform id=new AffineTransform();
 			id.translate(-x, -y);
 			
-			//int xx=(int)center.getElement(0)-width/2;
-			//int yy=(int)center.getElement(1)-height/2;
-			//g.translate(-centerX, -centerY);
-			for(Renderable r:rendered){
-				g.setTransform(id);
-				r.getSprite().draw(g, r.getX(), r.getY(), r.getScale());
+			if(rendered!=null){
+				for(Renderable r:rendered){
+					g.setTransform(id);
+					r.getSprite().draw(g, r.getX(), r.getY(), r.getScale());
+				}
 			}
 		}
 		currentImage++;
@@ -253,8 +138,65 @@ public class GridDrawingPanel extends Component implements MouseListener, MouseM
 		
 	}
 	public void display(){
-		
 		this.repaint();
+	}
+	@Override
+	public void componentHidden(ComponentEvent arg0) {}
+	@Override
+	public void componentMoved(ComponentEvent arg0) {}
+	@Override
+	public void componentResized(ComponentEvent arg0) {
+		image=new VolatileImage[4];
+	}
+	@Override
+	public void componentShown(ComponentEvent arg0) {}
+	
+	private class LocationUpdater implements MouseMotionListener, MouseListener{
+		int clickedX,clickedY;
+		int x=0,y=0;
+		boolean held=false;
+		@Override
+		public void mouseClicked(MouseEvent e) {}
+		@Override
+		public void mouseEntered(MouseEvent e) {}
+		@Override
+		public void mouseExited(MouseEvent e) {}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			if(e.getButton()==MouseEvent.BUTTON1){
+				clickedX=e.getX();
+				clickedY=e.getY();
+				held=true;
+			}
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			if(e.getButton()==MouseEvent.BUTTON1){
+				held=false;
+				x=x+clickedX-e.getX();
+				y=y+clickedY-e.getY();
+				setCenterPoint(x,y);
+			}
+			
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			if(held){
+				setCenterPoint(x+clickedX-e.getX(), y+clickedY-e.getY());
+			}
+			
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 		
 }

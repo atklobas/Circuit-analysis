@@ -1,5 +1,6 @@
 package circuitAnalysis;
 
+import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -9,127 +10,70 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Stack;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import Commands.Command;
 import Components.Component;
+import Components.OpAmp;
 import Components.Resistor;
+import Components.VoltageSource;
 import resources.ImageResource;
 import resources.Renderable;
 import resources.ResourceLoader;
 import resources.Sprite;
+import view.CircuitFrame;
 import view.GridDrawingPanel;
+import view.LoadingWindow;
 
-public class Main implements MouseListener, MouseMotionListener, KeyListener,Runnable {
-	public static final int width = 800;
-	public static final int height = 600;
+public class Main {
 	public static final int gridSize = 10;
 
 	int x, y;//location of the viewport;
-	GridDrawingPanel panel = new GridDrawingPanel(width, height, gridSize);
-	JFrame frame;
+	//GridDrawingPanel panel = new GridDrawingPanel( gridSize);
+	//JFrame frame;
+	
 	private HashMap<String, Sprite> sprites = new HashMap<String, Sprite>();
 	private ImageResource graphics;
 	private ResourceLoader loader = new ResourceLoader();
+	
 
 	private ArrayList<Renderable> components = new ArrayList<Renderable>();
-
+	private Stack<Command> commands=new Stack<Command>();
+	private Stack<Command> undone=new Stack<Command>();
+	private Command currentCommand;
+	
 	public Main() throws IOException {
-		frame = new JFrame();
-		frame.add(panel);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.addMouseListener(panel);
-		frame.addMouseMotionListener(panel);
-		frame.addKeyListener(panel);
-
+		
+		LoadingWindow loading=new LoadingWindow();
+		loading.update(100, "Loading... graphics.png");
 		graphics = new ResourceLoader().LoadImageResource("graphics.png");
-		//graphics.setTransparent(0, 0);
+		loading.update(800, "Cropping Sprites...");
 		sprites.put("Resistor", graphics.createSprite(32, 13, 58, 13, 3, 7));
 		sprites.put("Op Amp", graphics.createSprite(24,76,90,70,4,15,90));
-		sprites.put("Voltage Source", graphics.createSprite(144,4,210,47,3,22));
+		sprites.put("Voltage Source", graphics.createSprite(144,4,68,47,3,22));
+		
 		Resistor.setSprite(sprites.get("Resistor"));
-		Resistor r=new Resistor(100);
-		components.add(r);
-		r=new Resistor(100);
-		r.setX(50);
-		components.add(r);
-		panel.addMouseListener(this);
-		panel.addMouseMotionListener(this);
-		panel.addKeyListener(this);
+		OpAmp.setSprite(sprites.get("Op Amp"));
+		VoltageSource.setSprite(sprites.get("Voltage Source"));
 		
-		repaint();
-		frame.setVisible(true);
-		new Thread(this).start();
-		panel.requestFocus();
-
-	}
-	public void repaint(){
-		panel.render(components, x, y);
-		panel.repaint();
-	}
-
-	
-	int clickedX,clickedY;
-	boolean clicked=false;
-	@Override
-	public void mouseClicked(MouseEvent e) {
+		loading.update(900, "Initializing Display");
+		
+		CircuitFrame frame =new CircuitFrame(gridSize);
+		Component c=new Resistor();
+		frame.addAvaliableComponent(c);
+		c=new OpAmp();
+		frame.addAvaliableComponent(c);
+		c=new VoltageSource();
+		frame.addAvaliableComponent(c);
+		
+		
 		
 
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		clickedX=e.getX();
-		clickedY=e.getY();
-		if(e.getButton()==MouseEvent.BUTTON1){
-			clicked=true;
-			
-		}else{
-			Resistor r =new Resistor(100);
-			r.setX(x+e.getX());
-			r.setY(y+e.getY());
-			System.out.println(r.getX()+","+r.getY());
-			this.components.add(r);
-			this.repaint();
-		}
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		clicked=false;
-		x=x+clickedX-e.getX();
-		y=y+clickedY-e.getY();
-		repaint();
-
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		if(clicked){
-			panel.render(components, x+clickedX-e.getX(), y+clickedY-e.getY());
-			panel.repaint();
-		}
-
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
+		
+		loading.dispose();
 
 	}
 
@@ -147,40 +91,7 @@ public class Main implements MouseListener, MouseMotionListener, KeyListener,Run
 		});
 
 	}
-	@Override
-	public void run() {
-		while(true){
-			try {
-				Thread.sleep(50);
-				if(!clicked){
-					repaint();
-				}
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch(Exception e){
-				
-			}
-			//don't even worry abou it
-		}
-		
-	}
-	@Override
-	public void keyPressed(KeyEvent e) {
-		System.out.println("key event"+e.getKeyChar());
-		if(e.getKeyCode()==KeyEvent.VK_C){
-			this.components.clear();
-		}
-		
-	}
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
+	
 }

@@ -31,10 +31,6 @@ public class Sprite{
 		this(x,y,width,height,offsetX,offsetY,0,resource);
 	}
 
-	public void draw(Graphics g,int x, int y) {
-		
-		resource.draw(g,this,x-offsetX,y-offsetY);
-	}
 	public void draw(Graphics g,int x, int y, int width,int height) {
 		resource.draw(g,this,x-offsetX*width/this.width,y-offsetY*width/this.width,width,height);
 	}
@@ -101,15 +97,13 @@ public class Sprite{
 	}
 
 	
-	public int getSheetWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getWidth() {
+		return width;
 	}
 
 	
-	public int getSheetHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getHeight() {
+		return height;
 	}
 
 	
@@ -166,6 +160,9 @@ public class Sprite{
 		g.scale(scale, scale);
 		if(rotation!=0)
 			g.rotate(rotation,offsetX*scale,offsetY*scale);
+		resource.draw(g,this,0,0,(int)(width),(int)(height));
+	}
+	public void DrawFromtopCorner(Graphics g){
 		resource.draw(g,this,0,0,(int)(width),(int)(height));
 	}
 	
