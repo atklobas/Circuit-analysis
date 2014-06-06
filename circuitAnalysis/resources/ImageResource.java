@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
 public class ImageResource{
 	
 	private boolean accelerated;
-	private int imageType=VolatileImage.OPAQUE;
+	private int imageType=VolatileImage.BITMASK;
 	private ImageCapabilities caps=new ImageCapabilities(true);
 	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	GraphicsConfiguration gc;

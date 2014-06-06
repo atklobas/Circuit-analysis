@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
 
 import resources.Renderable;
+import Commands.Command;
 import Commands.CommandListener;
 import Components.Component;
 
@@ -16,6 +18,7 @@ public class CircuitFrame extends JFrame{
 	ComponentPanel panel=new ComponentPanel();
 	GridDrawingPanel canvas;
 	DNDListener listener=new DNDListener();
+	private ArrayList<CommandListener> cmdListeners= new ArrayList<CommandListener>();
 	private CircuitFrame frame=this;
 	public CircuitFrame(int gridSize){
 		this.setSize(800, 600);
@@ -44,6 +47,9 @@ public class CircuitFrame extends JFrame{
 		this.canvas.setRenderingList(rendered);
 	}
 	public void addCommandListener(CommandListener l){
+		
+	}
+	private void fireCommand(Command c){
 		
 	}
 	
