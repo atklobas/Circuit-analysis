@@ -15,6 +15,7 @@ import java.util.List;
 import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import circuitAnalysis.Model;
 import resources.Renderable;
@@ -28,10 +29,13 @@ public class CircuitFrame extends JFrame{
 	GridDrawingPanel canvas;
 	DNDListener dndl=new DNDListener();
 	private Model m;
-	
+	drawingPanel glassPane=new drawingPanel();
 	private ArrayList<CommandListener> cmdListeners= new ArrayList<CommandListener>();
 	private CircuitFrame frame=this;
 	public CircuitFrame(Model m){
+		this.setGlassPane(glassPane);
+		this.getGlassPane().setVisible(true);
+		//this.getGlassPane().setBackground(new Color(0xFF000000));
 		this.m=m;
 		this.setSize(800, 600);
 		this.setLayout(new BorderLayout());
@@ -54,18 +58,11 @@ public class CircuitFrame extends JFrame{
 	public void innerPaint(Graphics g){
 		if(dndl.current!=null){
 			Point p=MouseInfo.getPointerInfo().getLocation() ;
-			dndl.current.getSprite().draw(((Graphics2D)g), p.x, p.y, 1.);
+			Point p2=glassPane.getLocationOnScreen();
+			dndl.current.getSprite().draw(((Graphics2D)g), p.x-p2.x, p.y-p2.y, 1.);
 		}
 	}
-	
-	public void paint(Graphics g){
-		super.paint(g);
-		innerPaint(g);
-	}
-	public void update(Graphics g){
-		super.update(g);
-		innerPaint(g);
-	}
+
 	
 	/**
 	 * This method sets the list of components this panel will draw, 
@@ -158,6 +155,15 @@ public class CircuitFrame extends JFrame{
 			
 		}
 		
+	}
+	private class drawingPanel extends JPanel{
+		public drawingPanel(){
+			this.setOpaque(false);
+		}
+		public void paintComponent(Graphics g)  
+		   {  
+			innerPaint(g);
+		}
 	}
 
 	
