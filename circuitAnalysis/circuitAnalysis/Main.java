@@ -107,12 +107,16 @@ public class Main implements Model, CommandListener{
 	public void addWire(Wire w){
 		this.allWires.add(w);
 	}
+	public void removeWire(Wire w){
+		this.allWires.remove(w);
+	}
 	public Wire getWireAt(int x, int y){
-		Wire ret = null;
 		for(Wire w:allWires){
-			ret=w;
+			if(w.pointInside(x, y)){
+				return w;
+			}
 		}
-		return ret;
+		return null;
 	}
 
 	public static void main(String[] args) {
