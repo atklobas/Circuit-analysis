@@ -128,7 +128,7 @@ public class GridDrawingPanel extends Component implements ComponentListener{
 			if(rendered!=null){
 				for(Renderable r:rendered){
 					g.setTransform(id);
-					r.getSprite().draw(g, r.getX(), r.getY(), r.getScale());
+					r.getSprite().draw(g, r.getX(), r.getY(), r.getScale(),r.getAngle());
 				}
 			}
 		}
@@ -150,6 +150,7 @@ public class GridDrawingPanel extends Component implements ComponentListener{
 	@Override
 	public void componentShown(ComponentEvent arg0) {}
 	
+	
 	private class LocationUpdater implements MouseMotionListener, MouseListener{
 		int clickedX,clickedY;
 		int x=0,y=0;
@@ -163,21 +164,23 @@ public class GridDrawingPanel extends Component implements ComponentListener{
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if(e.getButton()==MouseEvent.BUTTON1){
+			if(e.getButton()==MouseEvent.BUTTON1&&e.isShiftDown()){
 				clickedX=e.getX();
 				clickedY=e.getY();
 				held=true;
+				e.consume();
 			}
 			
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if(e.getButton()==MouseEvent.BUTTON1){
+			if(held&&e.getButton()==MouseEvent.BUTTON1){
 				held=false;
 				x=x+clickedX-e.getX();
 				y=y+clickedY-e.getY();
 				setCenterPoint(x,y);
+				e.consume();
 			}
 			
 		}
@@ -186,6 +189,7 @@ public class GridDrawingPanel extends Component implements ComponentListener{
 		public void mouseDragged(MouseEvent e) {
 			if(held){
 				setCenterPoint(x+clickedX-e.getX(), y+clickedY-e.getY());
+				e.consume();
 			}
 			
 		}
@@ -199,11 +203,9 @@ public class GridDrawingPanel extends Component implements ComponentListener{
 	}
 
 	public int getCenterX() {
-		// TODO Auto-generated method stub
 		return x;
 	}
 	public int getCenterY() {
-		// TODO Auto-generated method stub
 		return y;
 	}
 		

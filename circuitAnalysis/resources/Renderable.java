@@ -7,5 +7,6 @@ public interface Renderable {
 	public boolean rendered();
 	public Sprite getSprite();
 	public double getScale();
+	public int getAngle();
 	
 }

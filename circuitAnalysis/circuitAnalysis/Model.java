@@ -8,4 +8,5 @@ public interface Model {
 	public int getGridSize();
 	public void undoLastCommand();
 	public void redoLastCommand();
+	public Component getComponentAt(int x, int y);
 }

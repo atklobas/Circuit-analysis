@@ -21,13 +21,17 @@ import circuitAnalysis.Model;
 import resources.Renderable;
 import Commands.Command;
 import Commands.CommandListener;
+import Commands.DeleteComponent;
+import Commands.MoveComponent;
 import Commands.PlaceComponent;
+import Commands.RotateComponent;
 import Components.Component;
 
 public class CircuitFrame extends JFrame{
 	ComponentPanel panel=new ComponentPanel();
 	GridDrawingPanel canvas;
 	DNDListener dndl=new DNDListener();
+	ModificationListener modl= new ModificationListener();
 	private Model m;
 	drawingPanel glassPane=new drawingPanel();
 	private ArrayList<CommandListener> cmdListeners= new ArrayList<CommandListener>();
@@ -45,6 +49,8 @@ public class CircuitFrame extends JFrame{
 		panel.addMouseMotionListener(dndl);
 		
 		canvas=new GridDrawingPanel(m.getGridSize());
+		canvas.addMouseListener(modl);
+		canvas.addMouseMotionListener(modl);
 		
 		this.add(BorderLayout.WEST,panel);
 		this.add(BorderLayout.CENTER,canvas);
@@ -56,10 +62,21 @@ public class CircuitFrame extends JFrame{
 		panel.addAvaliableComponent(p);
 	}
 	public void innerPaint(Graphics g){
+		Point p=MouseInfo.getPointerInfo().getLocation() ;
+		Point p2=glassPane.getLocationOnScreen();
+		p.translate(-p2.x, -p2.y);
+		
+		Component selected=null;
 		if(dndl.current!=null){
-			Point p=MouseInfo.getPointerInfo().getLocation() ;
-			Point p2=glassPane.getLocationOnScreen();
-			dndl.current.getSprite().draw(((Graphics2D)g), p.x-p2.x, p.y-p2.y, 1.);
+			selected=dndl.current;
+		}else if(modl.moving&&this.modl.selected!=null){
+			selected=modl.selected;
+			p.translate(-modl.xoff, -modl.yoff);
+			p.translate(-canvas.getCenterX(), -canvas.getCenterY());
+		}
+		
+		if(selected!=null){
+			selected.getSprite().draw(((Graphics2D)g), p.x, p.y, 1.,selected.getAngle());
 		}
 	}
 
@@ -82,7 +99,60 @@ public class CircuitFrame extends JFrame{
 		this.repaint();
 	}
 	
-	
+	/*
+	 * Listeners
+	 */
+	private class ModificationListener implements MouseListener, MouseMotionListener{
+		//TODO find assurances that events are dispatched to listeners in the order they were added;
+		private Component selected;
+		private boolean moving;
+		private int xoff, yoff;
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			if(!e.isConsumed()){
+				moving=true;
+				selected=m.getComponentAt(e.getX()+canvas.getCenterX(), e.getY()+canvas.getCenterY());
+				if(selected!=null){
+					xoff=(e.getX()-selected.getX());
+					yoff=(e.getY()-selected.getY());
+				}
+			}
+				
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			if(!e.isConsumed()){
+				if(selected!=null){
+					fireCommand(new MoveComponent(selected,e.getX()-xoff,e.getY()-yoff));
+					moving=false;
+					repaint();
+				}
+			}
+		}
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			if(!e.isConsumed()){
+				repaint();
+			}
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+		}
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void mouseEntered(MouseEvent e) {}
+		@Override
+		public void mouseExited(MouseEvent e) {}
+		
+		
+	}
 	private class DNDListener implements MouseListener, MouseMotionListener{
 		Component current=null;
 		@Override
@@ -127,7 +197,6 @@ public class CircuitFrame extends JFrame{
 		}
 	}
 	private class KeyInput implements KeyListener{
-
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if(e.isControlDown()){
@@ -138,6 +207,21 @@ public class CircuitFrame extends JFrame{
 				case KeyEvent.VK_Y:
 					m.redoLastCommand();
 					break;
+				}
+			}else{
+				switch(e.getKeyCode()){
+				case KeyEvent.VK_DELETE:
+				case KeyEvent.VK_BACK_SPACE:
+					if(!modl.moving&&modl.selected!=null){
+						fireCommand(new DeleteComponent(modl.selected));
+					}
+					break;
+				case KeyEvent.VK_SPACE:
+					if(!modl.moving&&modl.selected!=null){
+						fireCommand(new RotateComponent(modl.selected));
+					}
+					break;
+					
 				}
 			}
 			repaint();
@@ -156,7 +240,17 @@ public class CircuitFrame extends JFrame{
 		}
 		
 	}
+
+	
+	
+	
+	
+	/*
+	 * Useful Objects
+	 */
+	
 	private class drawingPanel extends JPanel{
+		private static final long serialVersionUID = 1L;
 		public drawingPanel(){
 			this.setOpaque(false);
 		}

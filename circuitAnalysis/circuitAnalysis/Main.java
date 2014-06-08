@@ -57,10 +57,10 @@ public class Main implements Model, CommandListener{
 		loading.update(800, "Cropping Sprites...");
 		sprites.put("Resistor", graphics.createSprite(32, 13, 58, 13, 3, 7));
 		sprites.put("Op Amp", graphics.createSprite(24,76,90,70,4,15));
-		sprites.put("Voltage Source", graphics.createSprite(144,4,68,47,3,22));
-		sprites.put("Amperage Source", graphics.createSprite(144,132,68,47,3,22));
-		sprites.put("Dependant Voltage Source", graphics.createSprite(144,201,68,47,3,17));
-		sprites.put("Dependant Amperage Source", graphics.createSprite(144,249,68,47,3,17));
+		sprites.put("Voltage Source", graphics.createSprite(144,4,68,45,3,22));
+		sprites.put("Amperage Source", graphics.createSprite(144,132,68,45,3,22));
+		sprites.put("Dependant Voltage Source", graphics.createSprite(144,201,68,35,3,17));
+		sprites.put("Dependant Amperage Source", graphics.createSprite(144,249,68,35,3,17));
 		sprites.put("Ground", graphics.createSprite(27,182,15,26,8,3));
 		Resistor.setSprite(sprites.get("Resistor"));
 		OpAmp.setSprite(sprites.get("Op Amp"));
@@ -137,6 +137,19 @@ public class Main implements Model, CommandListener{
 			this.commands.push(temp);
 		}
 		
+	}
+	@Override
+	public Component getComponentAt(int x, int y) {
+		
+		for(Renderable r:this.components){
+			if(r instanceof Component){
+				if(((Component) r).isInBounds(x, y)){
+					return (Component)r;
+				}
+			}
+		}
+		System.out.println("found nothing at ("+x+","+y+")");
+		return null;
 	}
 	
 	

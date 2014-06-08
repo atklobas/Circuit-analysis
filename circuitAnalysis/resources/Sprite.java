@@ -165,6 +165,16 @@ public class Sprite{
 	public void DrawFromtopCorner(Graphics g){
 		resource.draw(g,this,0,0,(int)(width),(int)(height));
 	}
+
+	public void draw(Graphics2D g, int x, int y, double scale, int rotation) {
+		g.translate(x-(int)(offsetX*scale), y-(int)(offsetY*scale));
+		g.scale(scale, scale);
+		if(this.rotation!=0||rotation!=0)
+			g.rotate(Math.toRadians(rotation)+this.rotation,offsetX*scale,offsetY*scale);
+		resource.draw(g,this,0,0,(int)(width),(int)(height));
+		
+	}
+	
 	
 
 }
