@@ -155,6 +155,7 @@ public class CircuitFrame extends JFrame{
 	}
 	private class DNDListener implements MouseListener, MouseMotionListener{
 		Component current=null;
+		PlaceComponent cmd=null;
 		@Override
 		public void mouseClicked(MouseEvent arg0) {}
 
@@ -167,7 +168,9 @@ public class CircuitFrame extends JFrame{
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if(e.getComponent()instanceof ComponentPanel.ComponentPane){
-				current=((ComponentPanel.ComponentPane)e.getComponent()).getComponent();
+				cmd=new PlaceComponent(((ComponentPanel.ComponentPane)e.getComponent()).getComponent());
+				
+				modl.selected=current=((PlaceComponent)cmd).getComponent();
 			}
 			
 		}
@@ -178,7 +181,8 @@ public class CircuitFrame extends JFrame{
 				Point p=canvas.getLocationOnScreen();
 				int x=e.getXOnScreen()-p.x+canvas.getCenterX();
 				int y=e.getYOnScreen()-p.y+canvas.getCenterY();
-				fireCommand(new PlaceComponent(x,y,current));
+				cmd.setLocation(x, y);
+				fireCommand(cmd);
 				System.out.println("place "+current+" at ("+x+","+y+")");
 			}
 			current=null;
@@ -217,7 +221,7 @@ public class CircuitFrame extends JFrame{
 					}
 					break;
 				case KeyEvent.VK_SPACE:
-					if(!modl.moving&&modl.selected!=null){
+					if(modl.selected!=null){
 						fireCommand(new RotateComponent(modl.selected));
 					}
 					break;

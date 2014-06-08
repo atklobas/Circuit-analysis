@@ -12,7 +12,7 @@ public class Wire {
 	private boolean populated = false;
 	
 	
-	public Wire(){
+	public Wire(int x1, int y1,int x2, int y2){
 		allWires.add(this);
 	}
 	

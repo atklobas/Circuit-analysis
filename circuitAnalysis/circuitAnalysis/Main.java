@@ -44,7 +44,7 @@ public class Main implements Model, CommandListener{
 	private ResourceLoader loader = new ResourceLoader();
 	
 
-	private ArrayList<Renderable> components = new ArrayList<Renderable>();
+	private LinkedList<Renderable> components = new LinkedList<Renderable>();
 	private Stack<Command> commands=new Stack<Command>();
 	private Stack<Command> undone=new Stack<Command>();
 	private Command currentCommand;
@@ -95,6 +95,7 @@ public class Main implements Model, CommandListener{
 		this.components.add(c);
 	}
 	public void removeComponent(Component c){
+		System.out.println("remoing "+c);
 		this.components.remove(c);
 	}
 	public int getGridSize(){
@@ -148,9 +149,9 @@ public class Main implements Model, CommandListener{
 				}
 			}
 		}
-		System.out.println("found nothing at ("+x+","+y+")");
 		return null;
 	}
+
 	
 	
 	

@@ -10,12 +10,12 @@ public class RotateComponent implements Command{
 	}
 	@Override
 	public void execute(Model m) {
-		c.rotate();
+		c.rotateClockwise();
 		
 	}
 	@Override
 	public void undo(Model m) {
-		c.rotate();
+		c.rotateAntiClockWise();
 		
 	}
 	
