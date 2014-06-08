@@ -7,11 +7,16 @@ public class PlaceComponent implements Command{
 	int x;
 	int y;
 	Component c;
-	public PlaceComponent(int x, int y, Component c) {
+	public PlaceComponent(Component c) {
 		super();
+		this.c = c.Clone();
+	}
+	public Component getComponent(){
+		return c;
+	}
+	public void setLocation(int x, int y){
 		this.x = x;
 		this.y = y;
-		this.c = c.Clone();
 	}
 	@Override
 	public void execute(Model m) {

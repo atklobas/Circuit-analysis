@@ -7,7 +7,11 @@ public class Wire {
 	private HashSet<Component> components = new HashSet<Component>();
 	private Node node;
 	private boolean populated = false;
-	
+
+	public Wire(int x1, int y1,int x2, int y2){
+		
+	}
+
 	
 	public void addWire(Wire w){
 		this.wires.add(w);
