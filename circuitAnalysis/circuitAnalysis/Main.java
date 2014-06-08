@@ -9,6 +9,7 @@ import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -25,6 +26,7 @@ import Components.Ground;
 import Components.OpAmp;
 import Components.Resistor;
 import Components.VoltageSource;
+import Components.Wire;
 import resources.ImageResource;
 import resources.Renderable;
 import resources.ResourceLoader;
@@ -39,6 +41,7 @@ public class Main implements Model, CommandListener{
 	//GridDrawingPanel panel = new GridDrawingPanel( gridSize);
 	//JFrame frame;
 	
+	private HashSet<Wire> allWires = new HashSet<Wire>();
 	private HashMap<String, Sprite> sprites = new HashMap<String, Sprite>();
 	private ImageResource graphics;
 	private ResourceLoader loader = new ResourceLoader();
@@ -99,6 +102,16 @@ public class Main implements Model, CommandListener{
 	}
 	public int getGridSize(){
 		return Main.gridSize;
+	}
+	public void addWire(Wire w){
+		this.allWires.add(w);
+	}
+	public Wire getWireAt(int x, int y){
+		Wire ret = null;
+		for(Wire w:allWires){
+			ret=w;
+		}
+		return ret;
 	}
 
 	public static void main(String[] args) {

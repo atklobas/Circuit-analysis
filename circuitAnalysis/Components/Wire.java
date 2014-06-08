@@ -3,18 +3,11 @@ package Components;
 import java.util.HashSet;
 
 public class Wire {
-	private static int created = 0;
-	private static HashSet<Wire> allWires = new HashSet<Wire>();
-	private int ID = ++created;
 	private HashSet<Wire> wires = new HashSet<Wire>();
 	private HashSet<Component> components = new HashSet<Component>();
 	private Node node;
 	private boolean populated = false;
 	
-	
-	public Wire(){
-		allWires.add(this);
-	}
 	
 	public void addWire(Wire w){
 		this.wires.add(w);
@@ -37,7 +30,7 @@ public class Wire {
 		}
 	}
 	
-	public static HashSet<Node> makeNodes(){
+	public static HashSet<Node> makeNodes(HashSet<Wire> allWires){
 		HashSet<Node> allNodes = new HashSet<Node>();
 
 		for(Wire w1:allWires){
