@@ -133,6 +133,7 @@ public class Wire {
 				allNodes.add(w1.node);
 			}
 			for(Component c:w1.components){
+				System.out.println(c);
 				w1.node.addComponent(c);
 			}
 		}

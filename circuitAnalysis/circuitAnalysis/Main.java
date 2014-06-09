@@ -134,6 +134,7 @@ public class Main implements Model, CommandListener{
 		
 		for(Wire w:allWires){
 			if(w.pointInside(x, y)){
+				
 				return w;
 			}
 		}
@@ -206,14 +207,22 @@ public class Main implements Model, CommandListener{
 			Component c=(Component)r;
 			int i=0;
 			for(int[] pnt:c.getConnectionLocations()){
-				Wire temp=this.getWireAt(pnt[0], pnt[1]);
+				Wire temp=this.getWireAt(pnt[0]+c.getX(), pnt[1]+c.getY());
 				if(temp!=null){
 					c.addWire(i, temp);
+					temp.addComponent(c);
 				}
 				i++;
 			}
 		}
 		HashSet<Node> nodes=Wire.makeNodes(allWires);
+		for(Node n:nodes){
+			System.out.println(n);
+			for(Component c:n.getComponents()){
+				System.out.println("\t"+c);
+				
+			}
+		}
 		
 		
 		

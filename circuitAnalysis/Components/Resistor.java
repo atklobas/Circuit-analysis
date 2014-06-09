@@ -27,7 +27,7 @@ public class Resistor extends Component{
 		return new Resistor(resistance);
 	}
 	public String toString(){
-		return ""+resistance;
+		return resistance+" ohms";
 	}
 	private void setNode2(){
 		if(this.getAngle()==0){
