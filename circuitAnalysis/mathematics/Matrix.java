@@ -95,6 +95,9 @@ public class Matrix {
 		}
 		
 	}
+	public double[][] getMatrix(){
+		return this.matrix;
+	}
 	/**
 	 * applies this matrix as a function to a vector and returns the result
 	 *  Vector a, matrix M, return aM
@@ -157,22 +160,16 @@ public class Matrix {
 	}
 	@SuppressWarnings("unused")
 	private void scaleRow(int row, double scalar){
-		
 		for(int i=0; i<columns; i++){
 			this.matrix[row][i] *= scalar;
-			this.matrix[row][i]=Math.round(this.matrix[row][i]*10000000000l)/10000000000.;
+			
 		}
-		System.out.println("scall \n"+this+"\n");
 	}
 	@SuppressWarnings("unused")
 	private void scaleAndAdd(int from, int to, double scalar){
 		for(int i=0; i<columns; i++){
 			this.matrix[to][i] += this.matrix[from][i] * scalar;
-			if(Math.abs(this.matrix[to][i])<0.0000000000001){
-				this.matrix[to][i] = 0;
-			}
 		}
-		System.out.println("scall and add\n"+this+"\n");
 	}
 	@SuppressWarnings("unused")
 	private void swapRows(int a, int b){
@@ -223,12 +220,19 @@ public class Matrix {
 			if(refWorker(m,row,i)){
 				row++;
 			};
-			//System.out.println(m+"\n"+row+","+i+"\n");
+			System.out.println(m+"\n"+row+","+i+"\n");
+		}
+		for(int x=0;x<rows;x++){
+			for(int y=0;y<columns;y++){
+				if(Math.abs(m.matrix[x][y])<.0000000001){
+					m.matrix[x][y]=0;
+				}
+			}	
 		}
 		
 		
 		
-		return m;
+		return m.rref();
 		
 	}
 	private boolean refWorker(Matrix m,int row, int column){
@@ -245,7 +249,11 @@ public class Matrix {
 	}
 	private boolean findnonzero(Matrix m,int row, int column){
 		for(int i=row;i<rows;i++){
-			if(m.matrix[row][column]!=0){
+			if(m.matrix[i][column]!=0){
+				if(Math.abs(m.matrix[i][column])<.0000000000001){
+					m.matrix[i][column]=0;
+					return false;
+				}
 				m.swapRows(row, i);
 				m.scaleRow(row, 1./m.matrix[row][column]);
 				return true;

@@ -73,40 +73,18 @@ public class Main implements Model, CommandListener{
 	}
 	
 	public Main() throws IOException {
-		double[][] mat={
-				{1./900,	-1./900,	0,	0,	-1,	0},
-				{-1./900,	(1./900+1./100),-1./100,0,0,0},
-				{0,-1./100,1./300+1./100,-1./300,0,0},
-				{0,0, -1./300 ,1./300,1,0},
-				{1,0,0,-1,0,40},
-				{0,0,0,1,0,0},
-				
-		};
-		double[][]mat2={
-
-{ 0.0011111111111111111, -0.0011111111111111111, 0.0,                  0.0,                   -1.0, 0.0},
-{-0.0011111111111111111,  0.011111111111111112, -0.01,                  0.0,                   0.0, 0.0},
-{ 0.0,		         -0.01,                  0.013333333333333334, -0.0033333333333333335, 0.0, 0.0},
-{ 0.0,                    0.0,                  -0.0033333333333333335, 0.0033333333333333335, 1.0, 0.0},
-{1.0,                     0.0,                   0.0,                  -1.0,                   0.0, 40.0},
-{0.0,                     0.0,                   0.0,                   1.0,                   0.0, 0.0},
-		};
-		Matrix m=new Matrix(mat);
-		Matrix m2=new Matrix(mat2);
-		System.err.println(m.subtract(m2));
-		System.err.flush();
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(m+"\n");
-		m=m.rref2();
-		System.out.println(m);
-		System.out.flush();
-		System.exit(0);
-		
+	/*double[][] m={
+			{0.03, -0.01, -0.02, 0.0, 0.0},
+					{-0.01, 0.01, 0.0, 1.0, 0.0},
+					{-0.02, 0.0, 0.02, -1.0, 0.0},
+					{0.0, -1.0, 1.0, 0.0, 40.0},
+					{0.0, 1.0, 0.0, 0.0, 0.0}
+	};
+	Matrix mat=new Matrix(m);
+	System.out.println(mat+"\n");
+		mat=mat.rref2();
+		System.out.println(mat+"\n");
+		System.exit(0);/**/
 		LoadingWindow loading=new LoadingWindow();
 		loading.update(100, "Loading... graphics.png");
 		graphics = new ResourceLoader().LoadImageResource("graphics.png");
@@ -277,10 +255,15 @@ public class Main implements Model, CommandListener{
 			column+=c.getAdditionalVariables();
 			row+=c.getAdditionalRows();
 		}
+		System.out.println(nodes.size());
 		System.out.println(m+"\n");
-		m=m.rref();
-		System.out.println(m);
-		return "voltage= "+m.getValue(of.getNode().getID(), m.getColumns()-1);
+		org.la4j.matrix.dense.Basic2DMatrix mp= new org.la4j.matrix.dense.Basic2DMatrix(m.getMatrix());
+		m=m.rref2();
+		//mp.
+		//System.out.println(mp.r);
+		System.err.println("requesting"+of.getNode().getID());
+		System.err.flush();
+		return "voltage = "+m.getValue(of.getNode().getID(), m.getColumns()-1);
 		//return "min arraySize: "+rows+"X"+columns+" selected node: "+of.getNode().getID();
 	}
 

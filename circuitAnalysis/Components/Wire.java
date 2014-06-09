@@ -170,6 +170,11 @@ public class Wire {
 				if(this.x1==p.x1){
 					return Math.max(p.y1, y1)<=Math.min(y2, p.y2);
 				}
+			}else{
+					if(y1<=p.y1&&y2>=p.y1){
+					
+					return this.x1>=p.x1&&this.x1<=p.x2;
+				}
 			}
 			
 		}
