@@ -209,6 +209,7 @@ public class Main implements Model, CommandListener{
 			for(int[] pnt:c.getConnectionLocations()){
 				Wire temp=this.getWireAt(pnt[0]+c.getX(), pnt[1]+c.getY());
 				if(temp!=null){
+					System.out.println("adding "+temp+" to"+c +"at "+(pnt[0]+c.getX())+","+ (pnt[1]+c.getY()));
 					c.addWire(i, temp);
 					temp.addComponent(c);
 				}

@@ -1,5 +1,6 @@
 package Components;
 
+import mathematics.Matrix;
 import circuitAnalysis.Main;
 import resources.Sprite;
 
@@ -58,5 +59,10 @@ public class VoltageSource extends Component{
 	}
 	public String toString(){
 		return this.voltage+" volts";
+	}
+
+	@Override
+	public int addEquations(Matrix m) {
+		return 1;
 	}
 }

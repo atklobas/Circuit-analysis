@@ -1,5 +1,6 @@
 package Components;
 
+import mathematics.Matrix;
 import circuitAnalysis.Main;
 import resources.Renderable;
 import resources.Sprite;
@@ -102,5 +103,5 @@ public abstract class Component implements Renderable, Cloneable{
 	}
 	public abstract int[][] getConnectionLocations();
 	public abstract void addWire(int con,Wire w);
-
+	public abstract int addEquations(Matrix m);
 }

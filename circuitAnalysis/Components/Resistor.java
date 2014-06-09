@@ -1,5 +1,6 @@
 package Components;
 
+import mathematics.Matrix;
 import circuitAnalysis.Main;
 import resources.Sprite;
 
@@ -58,6 +59,11 @@ public class Resistor extends Component{
 	public void addWire(int con, Wire w) {
 		wires[con]=w;
 		
+	}
+	@Override
+	public int addEquations(Matrix m) {
+		// TODO Auto-generated method stub
+		return 1;
 	}
 
 }

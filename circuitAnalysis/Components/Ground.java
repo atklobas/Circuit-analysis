@@ -1,5 +1,6 @@
 package Components;
 
+import mathematics.Matrix;
 import resources.Sprite;
 
 public class Ground extends Component{
@@ -25,5 +26,9 @@ public class Ground extends Component{
 	public void addWire(int con, Wire w) {
 		wire=w;
 		
+	}
+	@Override
+	public int addEquations(Matrix m) {
+		return 0;
 	}
 }
