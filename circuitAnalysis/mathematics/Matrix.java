@@ -157,15 +157,23 @@ public class Matrix {
 	}
 	@SuppressWarnings("unused")
 	private void scaleRow(int row, double scalar){
+		
 		for(int i=0; i<columns; i++){
 			this.matrix[row][i] *= scalar;
 		}
+		System.out.println("scall \n"+this+"\n");
 	}
 	@SuppressWarnings("unused")
 	private void scaleAndAdd(int from, int to, double scalar){
 		for(int i=0; i<columns; i++){
-			this.matrix[to][i] += this.matrix[from][i] * scalar;
+			
+				this.matrix[to][i] += this.matrix[from][i] * scalar;
+			
+			if(Math.abs(this.matrix[to][i])<.0000000001){
+				this.matrix[to][i]=0;
+			}
 		}
+		System.out.println("scall and add\n"+this+"\n");
 	}
 	@SuppressWarnings("unused")
 	private void swapRows(int a, int b){
@@ -178,7 +186,6 @@ public class Matrix {
 	public Matrix rref(){
 		Matrix m = new Matrix(this.matrix);
 		int pivots = Math.min(m.columns, m.rows);
-		
 		
 		for(int j=0; j<pivots; j++){
 			for(int i=j; i<rows; i++){
@@ -207,6 +214,44 @@ public class Matrix {
 		
 		return m;
 	}
+	public Matrix rref2(){
+		Matrix m = new Matrix(this.matrix);
+		int row=0;
+		for(int i=0;i<columns;i++ ){
+			if(refWorker(m,row,i)){
+				row++;
+			};
+			//System.out.println(m+"\n"+row+","+i+"\n");
+		}
+		
+		
+		
+		return m;
+		
+	}
+	private boolean refWorker(Matrix m,int row, int column){
+		if(!findnonzero(m,row,column)){
+			System.out.println("no non-zero");
+			return false;
+		}
+			
+		for(int i=row+1;i<rows;i++){
+			m.scaleAndAdd(row, i, -m.matrix[i][column]);
+		}
+		return true;
+		
+	}
+	private boolean findnonzero(Matrix m,int row, int column){
+		for(int i=row;i<rows;i++){
+			if(m.matrix[row][column]!=0){
+				m.swapRows(row, i);
+				m.scaleRow(row, 1./m.matrix[row][column]);
+				return true;
+			}
+		}
+		return false;
+	}
+		
 	
 	/*
 	public static void main (String[] args){

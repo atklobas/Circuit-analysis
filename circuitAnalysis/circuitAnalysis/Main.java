@@ -102,7 +102,7 @@ public class Main implements Model, CommandListener{
 			e.printStackTrace();
 		}
 		System.out.println(m+"\n");
-		m=m.rref();
+		m=m.rref2();
 		System.out.println(m);
 		System.out.flush();
 		System.exit(0);
