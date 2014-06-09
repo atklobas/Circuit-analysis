@@ -27,4 +27,11 @@ public class OpAmp extends Component{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	public void addWire(int con, Wire w) {
+		// TODO Auto-generated method stub
+		
+	}
 }

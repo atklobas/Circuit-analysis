@@ -4,6 +4,7 @@ import resources.Sprite;
 
 public class Ground extends Component{
 	private static Sprite sprite;
+	Wire wire;
 	public static void setSprite(Sprite sprite){
 		Ground.sprite=sprite;
 	}
@@ -18,7 +19,11 @@ public class Ground extends Component{
 	}
 	@Override
 	public int[][] getConnectionLocations() {
-		// TODO Auto-generated method stub
 		return new int[][]{{0,0}};
+	}
+	@Override
+	public void addWire(int con, Wire w) {
+		wire=w;
+		
 	}
 }

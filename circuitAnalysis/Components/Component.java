@@ -50,6 +50,7 @@ public abstract class Component implements Renderable, Cloneable{
 		
 		x-=this.x*Main.gridSize;
 		y-=this.y*Main.gridSize;
+		
 		int[][] con=this.getConnectionLocations();
 		for(int[] pnt:con){
 			if(Math.sqrt((pnt[0]-x)*(pnt[0]-x)+(pnt[1]-y)*(pnt[1]-y))<Main.gridSize){
@@ -100,5 +101,6 @@ public abstract class Component implements Renderable, Cloneable{
 		
 	}
 	public abstract int[][] getConnectionLocations();
+	public abstract void addWire(int con,Wire w);
 
 }

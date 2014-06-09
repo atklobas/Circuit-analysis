@@ -10,6 +10,7 @@ public class Wire {
 	private Node node;
 	private boolean populated = false;
 	private int x1, y1, x2, y2;
+	private boolean horizontal=false;
 
 	public int getX1() {
 		return x1*Main.gridSize;
@@ -32,16 +33,45 @@ public class Wire {
 
 
 	public Wire(int x1, int y1,int x2, int y2){
-		this.x1=(x1+Main.gridSize/2)/Main.gridSize;
-		this.y1=(y1+Main.gridSize/2)/Main.gridSize;
-		this.x2=(x2+Main.gridSize/2)/Main.gridSize;
-		this.y2=(y2+Main.gridSize/2)/Main.gridSize;
+		if(y1==y2){
+			horizontal=true;
+			this.y2=this.y1=(y1+Main.gridSize/2)/Main.gridSize;
+			if(x1<x2){
+				this.x1=(x1+Main.gridSize/2)/Main.gridSize;
+				this.x2=(x2+Main.gridSize/2)/Main.gridSize;
+			}else{
+				this.x2=(x1+Main.gridSize/2)/Main.gridSize;
+				this.x1=(x2+Main.gridSize/2)/Main.gridSize;
+			}
+			
+			
+			
+		}else{
+			this.x1=this.x2=(x2+Main.gridSize/2)/Main.gridSize;
+			if(y1<y2){
+				this.y1=(y1+Main.gridSize/2)/Main.gridSize;
+				this.y2=(y2+Main.gridSize/2)/Main.gridSize;
+			}else{
+				this.y2=(y1+Main.gridSize/2)/Main.gridSize;
+				this.y1=(y2+Main.gridSize/2)/Main.gridSize;
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
 	}
 
 	
 	public void addWire(Wire w){
 		this.wires.add(w);
 		w.wires.add(this);
+	}
+	public void clearWires(){
+		this.wires.clear();
 	}
 	
 	public void addComponent(Component c){
@@ -109,6 +139,32 @@ public class Wire {
 		
 		
 		return allNodes;
+	}
+
+
+	public boolean intersects(Wire p) {
+		
+		if(this.horizontal){
+			if(p.horizontal){
+				if(this.y1==p.y1){
+					return Math.max(p.x1, x1)<=Math.min(x2, p.x2);
+				}
+			}else{
+				if(x1<=p.x1&&x2>=p.x1){
+					
+					return this.y1>=p.y1&&this.y1<=p.y2;
+				}
+			}
+			
+		}else{
+			if(p.horizontal){
+				if(this.x1==p.x1){
+					return Math.max(p.y1, y1)<=Math.min(y2, p.y2);
+				}
+			}
+			
+		}
+		return false;
 	}
 	
 }

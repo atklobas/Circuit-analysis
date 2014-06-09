@@ -130,7 +130,11 @@ public class CircuitFrame extends JFrame{
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if(!e.isConsumed()){
-				System.out.println(m.getWireAt(x, y));
+				Wire temp=m.getWireAt(x, y);
+				if(e.getClickCount()>1&&temp!=null){
+					System.out.println(m.getVoltageAt(temp));
+					
+				}
 				moving=true;
 				selected=m.getComponentAt(e.getX()+canvas.getCenterX(), e.getY()+canvas.getCenterY());
 				if(selected!=null){
@@ -292,10 +296,6 @@ public class CircuitFrame extends JFrame{
 			innerPaint(g);
 		}
 	}
-
-
-
-
 
 	public void setWireList(HashSet<Wire> allWires) {
 		this.canvas.setWireList(allWires);

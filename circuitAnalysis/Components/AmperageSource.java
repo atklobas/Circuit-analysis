@@ -28,4 +28,11 @@ public class AmperageSource extends Component{
 		return null;
 	}
 
+
+	@Override
+	public void addWire(int con, Wire w) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

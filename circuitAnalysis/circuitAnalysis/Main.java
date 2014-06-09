@@ -23,6 +23,7 @@ import Components.Component;
 import Components.DependantAmperageSource;
 import Components.DependantVoltageSource;
 import Components.Ground;
+import Components.Node;
 import Components.OpAmp;
 import Components.Resistor;
 import Components.VoltageSource;
@@ -114,7 +115,7 @@ public class Main implements Model, CommandListener{
 	public Wire getWireAt(int x, int y){
 		x=(x+this.gridSize/2)/gridSize*gridSize;
 		y=(y+this.gridSize/2)/gridSize*gridSize;
-		System.out.println("("+x+","+y+")");
+		
 		for(Wire w:allWires){
 			if(w.pointInside(x, y)){
 				return w;
@@ -171,6 +172,36 @@ public class Main implements Model, CommandListener{
 			}
 		}
 		return null;
+	}
+	@Override
+	public String getVoltageAt(Wire of) {
+		
+		for(Wire w:allWires){
+			w.clearWires();
+		}
+		for(Wire w2: allWires){
+			for(Wire w: allWires){
+				if(w!=w2&&w.intersects(w2)){
+					w.addWire(w2);
+				}
+			}
+		}
+		for(Renderable r:this.components){
+			Component c=(Component)r;
+			int i=0;
+			for(int[] pnt:c.getConnectionLocations()){
+				Wire temp=this.getWireAt(pnt[0], pnt[1]);
+				if(temp!=null){
+					c.addWire(i, temp);
+				}
+				i++;
+			}
+		}
+		HashSet<Node> nodes=Wire.makeNodes(allWires);
+		
+		
+		
+		return ""+nodes.size();
 	}
 
 	

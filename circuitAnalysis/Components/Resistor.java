@@ -6,6 +6,7 @@ import resources.Sprite;
 public class Resistor extends Component{
 	private static Sprite sprite;
 	private int[] node1 = new int[]{0,0}, node2 = new int[]{5,0};
+	Wire[] wires=new Wire[2];
 	public static void setSprite(Sprite sprite){
 		Resistor.sprite=sprite;
 	}
@@ -52,6 +53,11 @@ public class Resistor extends Component{
 	public int[][] getConnectionLocations() {
 		int[][] ret={{0,0},{node2[0]*Main.gridSize,node2[1]*Main.gridSize}};
 		return ret;
+	}
+	@Override
+	public void addWire(int con, Wire w) {
+		wires[con]=w;
+		
 	}
 
 }
