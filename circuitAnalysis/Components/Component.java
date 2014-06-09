@@ -87,7 +87,7 @@ public abstract class Component implements Renderable, Cloneable{
 		rotation=(rotation+90)%360;
 		
 	}
-	public void rotateAntiClockWise() {
+	public void rotateAntiClockwise() {
 		rotation=(rotation+270)%360;
 		
 	}

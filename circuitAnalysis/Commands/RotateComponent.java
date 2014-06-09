@@ -15,7 +15,7 @@ public class RotateComponent implements Command{
 	}
 	@Override
 	public void undo(Model m) {
-		c.rotateAntiClockWise();
+		c.rotateAntiClockwise();
 		
 	}
 	
