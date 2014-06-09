@@ -193,7 +193,7 @@ public class Main implements Model, CommandListener{
 	public String getVoltageAt(Wire of) {
 		
 		for(Wire w:allWires){
-			w.clearWires();
+			w.reset();
 		}
 		for(Wire w2: allWires){
 			for(Wire w: allWires){

@@ -70,8 +70,10 @@ public class Wire {
 		this.wires.add(w);
 		w.wires.add(this);
 	}
-	public void clearWires(){
+	public void reset(){
 		this.wires.clear();
+		populated=false;
+		node=null;
 	}
 	
 	public void addComponent(Component c){
@@ -123,9 +125,7 @@ public class Wire {
 	public static HashSet<Node> makeNodes(HashSet<Wire> allWires){
 		HashSet<Node> allNodes = new HashSet<Node>();
 
-		for(Wire w1:allWires){
-			w1.populated=false;
-		}
+
 		
 		for(Wire w1:allWires){
 			if(w1.node==null){
