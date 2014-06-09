@@ -9,7 +9,7 @@ public class Node {
 	
 	public void addComponent(Component c){
 		if(components.contains(c)){
-			components.remove(c);
+			//components.remove(c);
 		}else{
 			components.add(c);
 		}
@@ -21,5 +21,8 @@ public class Node {
 		}
 		ret+=" !!!";
 		return ret;
+	}
+	public HashSet<Component> getComponents() {
+		return components;
 	}
 }

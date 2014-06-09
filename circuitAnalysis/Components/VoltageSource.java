@@ -7,6 +7,7 @@ public class VoltageSource extends Component{
 	private static Sprite sprite;
 	private int[] node1 = new int[]{0,0}, node2 = new int[]{6,0};
 	Wire[] wires=new Wire[2];
+	private double voltage=5;
 	public static void setSprite(Sprite sprite){
 		VoltageSource.sprite=sprite;
 	}
@@ -54,6 +55,8 @@ public class VoltageSource extends Component{
 	@Override
 	public void addWire(int con, Wire w) {
 		wires[con]=w;
-		
+	}
+	public String toString(){
+		return this.voltage+" volts";
 	}
 }
