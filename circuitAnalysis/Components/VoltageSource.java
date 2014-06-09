@@ -42,7 +42,6 @@ public class VoltageSource extends Component{
 	}
 	@Override
 	public Component Clone() {
-		// TODO Auto-generated method stub
 		return new VoltageSource();
 	}
 

@@ -18,6 +18,8 @@ import javax.swing.SwingUtilities;
 
 import Commands.Command;
 import Commands.CommandListener;
+import Commands.CreateWire;
+import Commands.PlaceComponent;
 import Components.AmperageSource;
 import Components.Component;
 import Components.DependantAmperageSource;
@@ -52,6 +54,19 @@ public class Main implements Model, CommandListener{
 	private Stack<Command> commands=new Stack<Command>();
 	private Stack<Command> undone=new Stack<Command>();
 	private Command currentCommand;
+	private void addSimpleCircuit(){
+		this.performCommand(new CreateWire(10,10,10,100));
+		VoltageSource vs=new VoltageSource();
+		Command c =new PlaceComponent(vs);
+		((PlaceComponent)c).setLocation(10, 10);
+		this.performCommand(c);
+		Resistor r=new Resistor();
+		 c =new PlaceComponent(r);
+		((PlaceComponent)c).setLocation(10, 100);
+		this.performCommand(c);
+		this.performCommand(new CreateWire(70,10,60,100));
+		
+	}
 	
 	public Main() throws IOException {
 		
@@ -94,6 +109,7 @@ public class Main implements Model, CommandListener{
 		frame.addAvaliableComponent(c);
 		frame.addCommandListener(this);
 		loading.dispose();
+		addSimpleCircuit();
 
 	}
 	public void addComponent(Component c){
