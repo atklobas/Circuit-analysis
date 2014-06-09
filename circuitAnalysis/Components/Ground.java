@@ -16,4 +16,9 @@ public class Ground extends Component{
 		// TODO Auto-generated method stub
 		return new Ground();
 	}
+	@Override
+	public int[][] getConnectionLocations() {
+		// TODO Auto-generated method stub
+		return new int[][]{{0,0}};
+	}
 }

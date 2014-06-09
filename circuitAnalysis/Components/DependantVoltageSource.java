@@ -16,4 +16,9 @@ public class DependantVoltageSource extends Component{
 		// TODO Auto-generated method stub
 		return new DependantVoltageSource();
 	}
+	@Override
+	public int[][] getConnectionLocations() {
+		
+		return null;
+	}
 }

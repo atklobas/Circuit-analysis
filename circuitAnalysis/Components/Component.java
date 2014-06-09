@@ -46,8 +46,16 @@ public abstract class Component implements Renderable, Cloneable{
 	}
 	public abstract Component Clone();
 	public boolean isInBounds(int x, int y){
+		
+		
 		x-=this.x*Main.gridSize;
 		y-=this.y*Main.gridSize;
+		int[][] con=this.getConnectionLocations();
+		for(int[] pnt:con){
+			if(Math.sqrt((pnt[0]-x)*(pnt[0]-x)+(pnt[1]-y)*(pnt[1]-y))<Main.gridSize){
+				return false;
+			}
+		}
 		Sprite s=this.getSprite();
 
 		if(rotation==0){
@@ -91,5 +99,6 @@ public abstract class Component implements Renderable, Cloneable{
 		rotation=(rotation+270)%360;
 		
 	}
+	public abstract int[][] getConnectionLocations();
 
 }

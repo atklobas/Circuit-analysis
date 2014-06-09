@@ -1,5 +1,6 @@
 package Components;
 
+import circuitAnalysis.Main;
 import resources.Sprite;
 
 public class Resistor extends Component{
@@ -46,6 +47,11 @@ public class Resistor extends Component{
 	public void rotateAntiClockwise(){
 		super.rotateAntiClockwise();
 		setNode2();
+	}
+	@Override
+	public int[][] getConnectionLocations() {
+		int[][] ret={{0,0},{node2[0]*Main.gridSize,node2[1]*Main.gridSize}};
+		return ret;
 	}
 
 }

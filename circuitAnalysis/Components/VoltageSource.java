@@ -1,5 +1,6 @@
 package Components;
 
+import circuitAnalysis.Main;
 import resources.Sprite;
 
 public class VoltageSource extends Component{
@@ -42,5 +43,11 @@ public class VoltageSource extends Component{
 	public Component Clone() {
 		// TODO Auto-generated method stub
 		return new VoltageSource();
+	}
+
+	@Override
+	public int[][] getConnectionLocations() {
+		int[][] ret={{0,0},{node2[0]*Main.gridSize,node2[1]*Main.gridSize}};
+		return ret;
 	}
 }

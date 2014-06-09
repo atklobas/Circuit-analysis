@@ -21,4 +21,11 @@ public class AmperageSource extends Component{
 		return new AmperageSource();
 	}
 
+
+	@Override
+	public int[][] getConnectionLocations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

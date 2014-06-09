@@ -20,4 +20,11 @@ public class OpAmp extends Component{
 		// TODO Auto-generated method stub
 		return new OpAmp();
 	}
+
+
+	@Override
+	public int[][] getConnectionLocations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

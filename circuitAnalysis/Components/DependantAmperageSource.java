@@ -18,4 +18,10 @@ public class DependantAmperageSource extends Component{
 		// TODO Auto-generated method stub
 		return new DependantAmperageSource();
 	}
+
+	@Override
+	public int[][] getConnectionLocations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
