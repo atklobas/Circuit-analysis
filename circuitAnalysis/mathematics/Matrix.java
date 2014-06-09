@@ -175,26 +175,30 @@ public class Matrix {
 		int pivots = Math.min(m.columns, m.rows);
 		
 		
-		for(int j=0; j<pivots; j++){
-			for(int i=j; i<rows; i++){
+		for(int j=0; j<pivots; j++){//for each column
+			for(int i=j; i<rows; i++){//finds nonzero in column to be pivot
 				if(m.matrix[i][j]!=0){
 					m.swapRows(j, i);
 					break;
 				}
 			}
-			if(m.matrix[j][j]!=1 && m.matrix[j][j]!=0){
-				m.scaleRow(j, 1.0/m.matrix[j][j]);
-			}
-			for(int i=j+1; i<rows; i++){
-				if(m.matrix[i][j]!=0){
-					m.scaleAndAdd(j, i, -m.matrix[i][j]);
+			if(m.matrix[j][j]!=0){//if pivot is non-zero
+				if(m.matrix[j][j]!=1 && m.matrix[j][j]!=0){//scales pivot to 1
+					m.scaleRow(j, 1.0/m.matrix[j][j]);
+				}
+				for(int i=j+1; i<rows; i++){//for each row under pivot, eliminate
+					if(m.matrix[i][j]!=0){
+						m.scaleAndAdd(j, i, -m.matrix[i][j]);
+					}
 				}
 			}
 		}
-		for(int i=0; i<pivots; i++){
+		for(int i=0; i<pivots; i++){//for each row
 			for(int j=i+1; j<pivots; j++){
 				if(m.matrix[i][j]!=0){
-					m.scaleAndAdd(j, i, -m.matrix[i][j]);
+					if(m.matrix[j][j]==1){
+						m.scaleAndAdd(j, i, -m.matrix[i][j]);
+					}
 				}
 			}
 		}
