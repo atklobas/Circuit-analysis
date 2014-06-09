@@ -3,9 +3,13 @@ package Components;
 import java.util.HashSet;
 
 public class Node {
+	private int ID;
 	private double voltage;
 	private HashSet<Component> components = new HashSet<Component>();
 	
+	public Node(int ID){
+		this.ID=ID;
+	}
 	
 	public void addComponent(Component c){
 		if(components.contains(c)){

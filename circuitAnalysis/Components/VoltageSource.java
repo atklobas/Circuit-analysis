@@ -35,8 +35,6 @@ public class VoltageSource extends Component{
 	
 	//add current variable for node voltage calculation 
 	//add line like ncalling-nrecieving = voltage
-	Wire one;
-	Wire two;
 	@Override
 	public Sprite getSprite() {
 		// TODO Auto-generated method stub
