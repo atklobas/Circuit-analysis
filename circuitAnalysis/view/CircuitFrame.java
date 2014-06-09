@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -21,6 +22,7 @@ import circuitAnalysis.Model;
 import resources.Renderable;
 import Commands.Command;
 import Commands.CommandListener;
+import Commands.CreateWire;
 import Commands.DeleteComponent;
 import Commands.MoveComponent;
 import Commands.PlaceComponent;
@@ -74,9 +76,21 @@ public class CircuitFrame extends JFrame{
 			p.translate(-modl.xoff, -modl.yoff);
 			p.translate(-canvas.getCenterX(), -canvas.getCenterY());
 		}
-		
 		if(selected!=null){
 			selected.getSprite().draw(((Graphics2D)g), p.x, p.y, 1.,selected.getAngle());
+		}else if(modl.moving){
+			int x=modl.x+canvas.getX();
+			int y=modl.x+canvas.getY();
+			p.translate(-canvas.getCenterX(), -canvas.getCenterY());
+			((Graphics2D) g).setStroke(new BasicStroke(3));
+			if(Math.abs(x-p.x)>=Math.abs(y-p.y)){
+				g.drawLine(x, y, p.x, y);
+				g.drawLine(p.x, y, p.x, p.y);
+			}else{
+				g.drawLine(x, y, x, p.y);
+				g.drawLine(x, p.y, p.x, p.y);
+			}
+			
 		}
 	}
 
@@ -108,6 +122,9 @@ public class CircuitFrame extends JFrame{
 		private boolean moving;
 		private int xoff, yoff;
 		
+		private int x,y;
+		//private CreateWire wirecmd;
+		
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if(!e.isConsumed()){
@@ -116,6 +133,10 @@ public class CircuitFrame extends JFrame{
 				if(selected!=null){
 					xoff=(e.getX()-selected.getX());
 					yoff=(e.getY()-selected.getY());
+				}else{
+					this.x=e.getX();
+					this.y=e.getY();
+					//wirecmd=new CreateWire(e.getX()+canvas.getCenterX(), e.getY()+canvas.getCenterY());
 				}
 			}
 				
@@ -124,12 +145,16 @@ public class CircuitFrame extends JFrame{
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			if(!e.isConsumed()){
+				moving=false;
 				if(selected!=null){
 					fireCommand(new MoveComponent(selected,e.getX()-xoff,e.getY()-yoff));
-					moving=false;
-					repaint();
+					
+					
+				}else {
+					Command c=new CreateWire(x+canvas.getCenterX(), y+canvas.getCenterY(),e.getX()+canvas.getCenterX(), e.getY()+canvas.getCenterY());
 				}
 			}
+			repaint();
 		}
 		@Override
 		public void mouseDragged(MouseEvent e) {
