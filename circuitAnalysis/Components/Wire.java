@@ -2,14 +2,20 @@ package Components;
 
 import java.util.HashSet;
 
+import circuitAnalysis.Main;
+
 public class Wire {
 	private HashSet<Wire> wires = new HashSet<Wire>();
 	private HashSet<Component> components = new HashSet<Component>();
 	private Node node;
 	private boolean populated = false;
+	private int x1, y1, x2, y2;
 
 	public Wire(int x1, int y1,int x2, int y2){
-		
+		this.x1=(x1+Main.gridSize/2)/Main.gridSize;
+		this.y1=(y1+Main.gridSize/2)/Main.gridSize;
+		this.x2=(x2+Main.gridSize/2)/Main.gridSize;
+		this.y2=(y2+Main.gridSize/2)/Main.gridSize;
 	}
 
 	
@@ -32,6 +38,34 @@ public class Wire {
 				w.populateNodes(n);	
 			}
 		}
+	}
+	
+	
+	//this method assumes that a wire can only be vertical, horizontal, or a point.
+	public boolean pointInside(int x, int y){
+		boolean vertical = false, horizontal = false;
+		if(this.x1==this.x2){//vertical
+			vertical = true;
+		}
+		if(this.y1==this.y2){//horizontal
+			horizontal=true;
+		}
+		
+		if(horizontal&&vertical){//point wire
+			if(this.x1==x && this.y1==y){
+				return true;
+			}
+		}else if(horizontal){
+			if(this.y1==y){
+				return true;
+			}
+		}else if(vertical){
+			if(this.x1==x){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public static HashSet<Node> makeNodes(HashSet<Wire> allWires){
