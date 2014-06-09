@@ -127,6 +127,7 @@ public class GridDrawingPanel extends Component implements ComponentListener{
 			}
 			AffineTransform id=new AffineTransform();
 			id.translate(-x, -y);
+			g.setTransform(id);
 			g.setColor(Color.BLACK);
 			g.setStroke(new BasicStroke(3));
 			if(allWires!=null){

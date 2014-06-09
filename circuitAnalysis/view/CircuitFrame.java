@@ -83,7 +83,7 @@ public class CircuitFrame extends JFrame{
 		}else if(modl.moving){
 			int x=modl.x+canvas.getX();
 			int y=modl.y+canvas.getY();
-			p.translate(-canvas.getCenterX(), -canvas.getCenterY());
+			//p.translate(-canvas.getCenterX(), -canvas.getCenterY());
 			((Graphics2D) g).setStroke(new BasicStroke(3));
 			if(Math.abs(x-p.x)>=Math.abs(y-p.y)){
 				g.drawLine(x, y, p.x, y);
