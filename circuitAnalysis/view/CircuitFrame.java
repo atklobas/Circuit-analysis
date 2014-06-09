@@ -17,6 +17,7 @@ import java.util.List;
 import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import circuitAnalysis.Model;
@@ -29,6 +30,7 @@ import Commands.MoveComponent;
 import Commands.PlaceComponent;
 import Commands.RotateComponent;
 import Components.Component;
+import Components.Resistor;
 import Components.Wire;
 
 public class CircuitFrame extends JFrame{
@@ -140,6 +142,10 @@ public class CircuitFrame extends JFrame{
 				if(selected!=null){
 					xoff=(e.getX()-selected.getX());
 					yoff=(e.getY()-selected.getY());
+					if(e.getClickCount()>1 &&selected instanceof Resistor){
+						String s = (String)JOptionPane.showInputDialog("resistance");
+						((Resistor)selected).setResistance(Double.parseDouble(s));
+					}
 				}else{
 					this.x=e.getX();
 					this.y=e.getY();

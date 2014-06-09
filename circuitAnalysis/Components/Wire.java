@@ -11,6 +11,9 @@ public class Wire {
 	private boolean populated = false;
 	private int x1, y1, x2, y2;
 	private boolean horizontal=false;
+	public Node getNode(){
+		return node;
+	}
 
 	public int getX1() {
 		return x1*Main.gridSize;
@@ -85,6 +88,7 @@ public class Wire {
 		this.node=n;
 		populated=true;
 		//System.out.println("Wire "+this.ID+" populated! ");
+		n.addWire(this);
 		for(Wire w:wires){
 			if(!w.populated){
 				w.populateNodes(n);	

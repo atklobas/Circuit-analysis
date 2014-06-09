@@ -63,6 +63,11 @@ public class Matrix {
 		this.rows=n;
 		this.columns=n;
 	}
+	public Matrix(int rows, int columns){
+		this.matrix=new double[rows][columns];
+		this.rows=rows;
+		this.columns=columns;
+	}
 	
 	/**
 	 * 
@@ -217,9 +222,6 @@ public class Matrix {
 		
 	}
 	*/
-	
-	
-	
 	public String toString(){
 		String ret="";
 		for(double[] str: this.matrix){
@@ -228,5 +230,29 @@ public class Matrix {
 		
 		return ret.substring(0,ret.length()-1);
 	}
+	public void add(int row, int column, double value){
+		matrix[row][column]+=value;
+	}
+	public double getValue(int row, int column){
+		return matrix[row][column];
+	}
+	public int getRows(){
+		return this.rows;
+	}
+	public int getColumns(){
+		return this.columns;
+	}
+	public Matrix subtract(Matrix m){
+		Matrix ret=new Matrix(rows,columns);
+			for(int x=0;x<rows;x++){
+				for(int y=0;y<columns;y++){
+					ret.matrix[x][y]=matrix[x][y]-m.matrix[x][y];
+				}	
+			}
+		
+		return ret;
+		
+	}
+	
 
 }

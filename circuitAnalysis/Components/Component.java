@@ -103,5 +103,11 @@ public abstract class Component implements Renderable, Cloneable{
 	}
 	public abstract int[][] getConnectionLocations();
 	public abstract void addWire(int con,Wire w);
-	public abstract int addEquations(Matrix m);
+	public abstract int addEquations(Matrix m, int row, int column);
+	public int getAdditionalVariables() {
+		return 0;
+	}
+	public int getAdditionalRows() {
+		return 0;
+	}
 }

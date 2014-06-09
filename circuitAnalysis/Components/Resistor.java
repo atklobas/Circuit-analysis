@@ -11,11 +11,11 @@ public class Resistor extends Component{
 	public static void setSprite(Sprite sprite){
 		Resistor.sprite=sprite;
 	}
-	private int resistance;
+	private double resistance;
 	public Resistor(){
 		this(100);
 	}
-	public Resistor(int resistance) {
+	public Resistor(double resistance) {
 		this.resistance=resistance;
 	}
 
@@ -61,9 +61,18 @@ public class Resistor extends Component{
 		
 	}
 	@Override
-	public int addEquations(Matrix m) {
-		// TODO Auto-generated method stub
+	public int addEquations(Matrix m, int row, int column) {
+		int node1=this.wires[0].getNode().getID();
+		int node2=this.wires[1].getNode().getID();
+		System.out.println(node1+","+node2);
+		m.add(node1, node1, 1./this.resistance);
+		m.add(node1, node2, -1./this.resistance);
+		m.add(node2, node1, -1./this.resistance);
+		m.add(node2, node2, 1./this.resistance);
 		return 1;
+	}
+	public void setResistance(double r){
+		this.resistance=r;
 	}
 
 }

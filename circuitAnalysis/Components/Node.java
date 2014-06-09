@@ -1,5 +1,6 @@
 package Components;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Node {
@@ -19,14 +20,20 @@ public class Node {
 		}
 	}
 	public String toString(){
-		String ret="Node";
-		for(Component c:components){
-			ret+=", "+c.toString();
-		}
-		ret+=" !!!";
+		String ret="Node"+ID;
+		ret+=wires;
 		return ret;
 	}
 	public HashSet<Component> getComponents() {
 		return components;
+	}
+
+	public int getID() {
+		return ID;
+	}
+	private ArrayList<Wire> wires= new ArrayList<Wire>();
+	public void addWire(Wire wire) {
+		wires.add(wire);
+		
 	}
 }
