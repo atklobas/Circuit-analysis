@@ -1,6 +1,7 @@
 package circuitAnalysis;
 
 import Components.Component;
+import Components.Wire;
 
 public interface Model {
 	public void addComponent(Component c);
@@ -9,4 +10,7 @@ public interface Model {
 	public void undoLastCommand();
 	public void redoLastCommand();
 	public Component getComponentAt(int x, int y);
+	public void addWire(Wire w);
+	public void removeWire(Wire w);
+	public Wire getWireAt(int x, int y);
 }

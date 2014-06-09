@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.awt.Graphics2D;
 
@@ -28,6 +29,7 @@ import Commands.MoveComponent;
 import Commands.PlaceComponent;
 import Commands.RotateComponent;
 import Components.Component;
+import Components.Wire;
 
 public class CircuitFrame extends JFrame{
 	ComponentPanel panel=new ComponentPanel();
@@ -80,7 +82,7 @@ public class CircuitFrame extends JFrame{
 			selected.getSprite().draw(((Graphics2D)g), p.x, p.y, 1.,selected.getAngle());
 		}else if(modl.moving){
 			int x=modl.x+canvas.getX();
-			int y=modl.x+canvas.getY();
+			int y=modl.y+canvas.getY();
 			p.translate(-canvas.getCenterX(), -canvas.getCenterY());
 			((Graphics2D) g).setStroke(new BasicStroke(3));
 			if(Math.abs(x-p.x)>=Math.abs(y-p.y)){
@@ -152,6 +154,7 @@ public class CircuitFrame extends JFrame{
 					
 				}else {
 					Command c=new CreateWire(x+canvas.getCenterX(), y+canvas.getCenterY(),e.getX()+canvas.getCenterX(), e.getY()+canvas.getCenterY());
+					fireCommand(c);
 				}
 			}
 			repaint();
@@ -287,6 +290,15 @@ public class CircuitFrame extends JFrame{
 		   {  
 			innerPaint(g);
 		}
+	}
+
+
+
+
+
+	public void setWireList(HashSet<Wire> allWires) {
+		this.canvas.setWireList(allWires);
+		
 	}
 
 	

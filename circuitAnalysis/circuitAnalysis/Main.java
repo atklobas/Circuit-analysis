@@ -75,7 +75,8 @@ public class Main implements Model, CommandListener{
 		loading.update(900, "Initializing Display");
 		
 		CircuitFrame frame =new CircuitFrame(this);
-		frame.setRenderingList(this.components);
+		frame.setRenderingList(this.components);;
+		frame.setWireList(this.allWires);
 		Component c=new Resistor();
 		frame.addAvaliableComponent(c);
 		c=new OpAmp();

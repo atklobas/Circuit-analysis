@@ -11,6 +11,26 @@ public class Wire {
 	private boolean populated = false;
 	private int x1, y1, x2, y2;
 
+	public int getX1() {
+		return x1*Main.gridSize;
+	}
+
+
+	public int getY1() {
+		return y1*Main.gridSize;
+	}
+
+
+	public int getX2() {
+		return x2*Main.gridSize;
+	}
+
+
+	public int getY2() {
+		return y2*Main.gridSize;
+	}
+
+
 	public Wire(int x1, int y1,int x2, int y2){
 		this.x1=(x1+Main.gridSize/2)/Main.gridSize;
 		this.y1=(y1+Main.gridSize/2)/Main.gridSize;

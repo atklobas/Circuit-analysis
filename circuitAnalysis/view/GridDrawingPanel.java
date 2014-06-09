@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -18,8 +19,10 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.VolatileImage;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
+import Components.Wire;
 import resources.Renderable;
 
 
@@ -34,7 +37,7 @@ public class GridDrawingPanel extends Component implements ComponentListener{
 	//this list will be shared with and edited externally
 	private List<Renderable> rendered=null;
 	int x=0, y=0;
-	
+	HashSet<Wire> allWires;
 	AffineTransform id=new AffineTransform();
 	public GridDrawingPanel(int gridsize){
 		super();
@@ -124,13 +127,20 @@ public class GridDrawingPanel extends Component implements ComponentListener{
 			}
 			AffineTransform id=new AffineTransform();
 			id.translate(-x, -y);
-			
+			g.setColor(Color.BLACK);
+			g.setStroke(new BasicStroke(3));
+			if(allWires!=null){
+				for(Wire w:allWires){
+					g.drawLine(w.getX1(), w.getY1(), w.getX2(), w.getY2());
+				}
+			}
 			if(rendered!=null){
 				for(Renderable r:rendered){
 					g.setTransform(id);
 					r.getSprite().draw(g, r.getX(), r.getY(), r.getScale(),r.getAngle());
 				}
 			}
+			
 		}
 		currentImage++;
 		
@@ -207,6 +217,10 @@ public class GridDrawingPanel extends Component implements ComponentListener{
 	}
 	public int getCenterY() {
 		return y;
+	}
+	public void setWireList(HashSet<Wire> allWires) {
+		this.allWires=allWires;
+		
 	}
 		
 }

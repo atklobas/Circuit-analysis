@@ -16,14 +16,15 @@ public class CreateWire implements Command{
 	}
 	@Override
 	public void execute(Model m) {
-		m.addComponent(c);
+		m.addWire(wire1);
+		m.addWire(wire2);
 		
 	}
 
 	@Override
 	public void undo(Model m) {
-		// TODO Auto-generated method stub
-		
+		m.removeWire(wire1);
+		m.removeWire(wire2);
 	}
 
 }
