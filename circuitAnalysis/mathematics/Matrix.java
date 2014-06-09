@@ -159,12 +159,17 @@ public class Matrix {
 	private void scaleRow(int row, double scalar){
 		for(int i=0; i<columns; i++){
 			this.matrix[row][i] *= scalar;
+			this.matrix[row][i]=Math.round(this.matrix[row][i]*10000000000l)/10000000000.;
 		}
 	}
 	@SuppressWarnings("unused")
 	private void scaleAndAdd(int from, int to, double scalar){
 		for(int i=0; i<columns; i++){
+			
 			this.matrix[to][i] += this.matrix[from][i] * scalar;
+			if(Math.abs(this.matrix[to][i])<0.0000000000001){
+				this.matrix[to][i] = 0;
+			}
 		}
 	}
 	@SuppressWarnings("unused")
@@ -198,7 +203,7 @@ public class Matrix {
 				}
 			}
 		}
-		for(int i=0; i<pivots; i++){//for each row
+		for(int i=0; i<pivots; i++){//for each row, back-eliminate
 			for(int j=i+1; j<pivots; j++){
 				if(m.matrix[i][j]!=0){
 					if(m.matrix[j][j]==1){
@@ -207,7 +212,6 @@ public class Matrix {
 				}
 			}
 		}
-		
 		
 		return m;
 	}
