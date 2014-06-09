@@ -130,6 +130,7 @@ public class CircuitFrame extends JFrame{
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if(!e.isConsumed()){
+				System.out.println(m.getWireAt(x, y));
 				moving=true;
 				selected=m.getComponentAt(e.getX()+canvas.getCenterX(), e.getY()+canvas.getCenterY());
 				if(selected!=null){
@@ -150,11 +151,11 @@ public class CircuitFrame extends JFrame{
 				moving=false;
 				if(selected!=null){
 					fireCommand(new MoveComponent(selected,e.getX()-xoff,e.getY()-yoff));
-					
-					
 				}else {
-					Command c=new CreateWire(x+canvas.getCenterX(), y+canvas.getCenterY(),e.getX()+canvas.getCenterX(), e.getY()+canvas.getCenterY());
-					fireCommand(c);
+					if(Math.abs(x-e.getX())+Math.abs(y-e.getY())>canvas.gridsize){
+						Command c=new CreateWire(x+canvas.getCenterX(), y+canvas.getCenterY(),e.getX()+canvas.getCenterX(), e.getY()+canvas.getCenterY());
+						fireCommand(c);
+					}
 				}
 			}
 			repaint();

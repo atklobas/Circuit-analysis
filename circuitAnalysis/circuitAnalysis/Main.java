@@ -112,6 +112,9 @@ public class Main implements Model, CommandListener{
 		this.allWires.remove(w);
 	}
 	public Wire getWireAt(int x, int y){
+		x=(x+this.gridSize/2)/gridSize*gridSize;
+		y=(y+this.gridSize/2)/gridSize*gridSize;
+		System.out.println("("+x+","+y+")");
 		for(Wire w:allWires){
 			if(w.pointInside(x, y)){
 				return w;
