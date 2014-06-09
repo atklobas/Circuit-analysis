@@ -1,5 +1,6 @@
 package Components;
 
+import mathematics.Matrix;
 import circuitAnalysis.Main;
 import resources.Sprite;
 
@@ -7,7 +8,7 @@ public class VoltageSource extends Component{
 	private static Sprite sprite;
 	private int[] node1 = new int[]{0,0}, node2 = new int[]{6,0};
 	Wire[] wires=new Wire[2];
-	private double voltage=5;
+	private double voltage=40;
 	public static void setSprite(Sprite sprite){
 		VoltageSource.sprite=sprite;
 	}
@@ -56,5 +57,24 @@ public class VoltageSource extends Component{
 	}
 	public String toString(){
 		return this.voltage+" volts";
+	}
+
+	@Override
+	public int addEquations(Matrix m, int row, int column) {
+		int node1=this.wires[0].getNode().getID();
+		int node2=this.wires[1].getNode().getID();
+		
+		m.add(node1, column, 1);
+		m.add(node2, column, -1);
+		m.add(row, node2, 1);
+		m.add(row, node1, -1);
+		m.add(row, m.getColumns()-1, this.voltage);
+		return 1;
+	}
+	public int getAdditionalVariables() {
+		return 1;
+	}
+	public int getAdditionalRows() {
+		return 1;
 	}
 }

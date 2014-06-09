@@ -16,6 +16,7 @@ import java.util.Stack;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import mathematics.Matrix;
 import Commands.Command;
 import Commands.CommandListener;
 import Commands.CreateWire;
@@ -65,10 +66,46 @@ public class Main implements Model, CommandListener{
 		((PlaceComponent)c).setLocation(10, 100);
 		this.performCommand(c);
 		this.performCommand(new CreateWire(70,10,60,100));
+		 c =new PlaceComponent(new Ground());
+			((PlaceComponent)c).setLocation(10, 100);
+			this.performCommand(c);
 		
 	}
 	
 	public Main() throws IOException {
+		double[][] mat={
+				{1./900,	-1./900,	0,	0,	-1,	0},
+				{-1./900,	(1./900+1./100),-1./100,0,0,0},
+				{0,-1./100,1./300+1./100,-1./300,0,0},
+				{0,0, -1./300 ,1./300,1,0},
+				{1,0,0,-1,0,40},
+				{0,0,0,1,0,0},
+				
+		};
+		double[][]mat2={
+
+{ 0.0011111111111111111, -0.0011111111111111111, 0.0,                  0.0,                   -1.0, 0.0},
+{-0.0011111111111111111,  0.011111111111111112, -0.01,                  0.0,                   0.0, 0.0},
+{ 0.0,		         -0.01,                  0.013333333333333334, -0.0033333333333333335, 0.0, 0.0},
+{ 0.0,                    0.0,                  -0.0033333333333333335, 0.0033333333333333335, 1.0, 0.0},
+{1.0,                     0.0,                   0.0,                  -1.0,                   0.0, 40.0},
+{0.0,                     0.0,                   0.0,                   1.0,                   0.0, 0.0},
+		};
+		Matrix m=new Matrix(mat);
+		Matrix m2=new Matrix(mat2);
+		System.err.println(m.subtract(m2));
+		System.err.flush();
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(m+"\n");
+		m=m.rref();
+		System.out.println(m);
+		System.out.flush();
+		System.exit(0);
 		
 		LoadingWindow loading=new LoadingWindow();
 		loading.update(100, "Loading... graphics.png");
@@ -209,6 +246,7 @@ public class Main implements Model, CommandListener{
 			for(int[] pnt:c.getConnectionLocations()){
 				Wire temp=this.getWireAt(pnt[0]+c.getX(), pnt[1]+c.getY());
 				if(temp!=null){
+					System.out.println("adding "+temp+" to"+c +"at "+(pnt[0]+c.getX())+","+ (pnt[1]+c.getY()));
 					c.addWire(i, temp);
 					temp.addComponent(c);
 				}
@@ -223,10 +261,27 @@ public class Main implements Model, CommandListener{
 				
 			}
 		}
-		
-		
-		
-		return ""+nodes.size();
+		int columns=nodes.size()+1;
+		int rows=nodes.size();
+		for(Renderable r:this.components){
+			Component c=(Component)r;
+			columns+=c.getAdditionalVariables();
+			rows+=c.getAdditionalRows();
+		}
+		Matrix m=new Matrix(rows, columns);
+		int row=nodes.size();
+		int column=row;
+		for(Renderable r:this.components){
+			Component c=(Component)r;
+			c.addEquations(m, row, column);
+			column+=c.getAdditionalVariables();
+			row+=c.getAdditionalRows();
+		}
+		System.out.println(m+"\n");
+		m=m.rref();
+		System.out.println(m);
+		return "voltage= "+m.getValue(of.getNode().getID(), m.getColumns()-1);
+		//return "min arraySize: "+rows+"X"+columns+" selected node: "+of.getNode().getID();
 	}
 
 	

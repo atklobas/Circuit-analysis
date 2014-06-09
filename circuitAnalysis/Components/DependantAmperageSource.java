@@ -1,5 +1,6 @@
 package Components;
 
+import mathematics.Matrix;
 import circuitAnalysis.Main;
 import resources.Sprite;
 
@@ -53,6 +54,11 @@ public class DependantAmperageSource extends Component{
 	@Override
 	public void addWire(int con, Wire w) {
 		wires[con]=w;
+	}
+	@Override
+	public int addEquations(Matrix m, int row, int column) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
