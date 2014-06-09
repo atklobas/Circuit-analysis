@@ -111,11 +111,15 @@ public class Wire {
 			}
 		}else if(horizontal){
 			if(this.y1==y){
-				return true;
+				if(x>=x1&&x<=x2){
+					return true;
+				}
 			}
 		}else if(vertical){
 			if(this.x1==x){
-				return true;
+				if(y>=y1&&y<=y2){
+					return true;
+				}
 			}
 		}
 		
