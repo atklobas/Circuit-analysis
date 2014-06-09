@@ -1,9 +1,33 @@
 package Components;
 
+import circuitAnalysis.Main;
 import resources.Sprite;
 
 public class DependantVoltageSource extends Component{
 	private static Sprite sprite;
+	private int[] node1 = new int[]{0,0}, node2 = new int[]{6,0};
+	Wire[] wires=new Wire[2];
+	
+	private void setNode2(){
+		if(this.getAngle()==0){
+			node2 = new int[]{6,0};
+		}else if(this.getAngle()==90){
+			node2 = new int[]{0,6};
+		}else if(this.getAngle()==180){
+			node2 = new int[]{-6,0};
+		}else if(this.getAngle()==270){
+			node2 = new int[]{0,-6};
+		}
+	}
+	public void rotateClockwise(){
+		super.rotateClockwise();
+		setNode2();
+	}
+	public void rotateAntiClockwise(){
+		super.rotateAntiClockwise();
+		setNode2();
+	}
+	
 	public static void setSprite(Sprite sprite){
 		DependantVoltageSource.sprite=sprite;
 	}
@@ -18,12 +42,11 @@ public class DependantVoltageSource extends Component{
 	}
 	@Override
 	public int[][] getConnectionLocations() {
-		
-		return null;
+		int[][] ret={{0,0},{node2[0]*Main.gridSize,node2[1]*Main.gridSize}};
+		return ret;
 	}
 	@Override
 	public void addWire(int con, Wire w) {
-		// TODO Auto-generated method stub
-		
+		wires[con]=w;
 	}
 }

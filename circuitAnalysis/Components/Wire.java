@@ -128,12 +128,12 @@ public class Wire {
 	
 	public static HashSet<Node> makeNodes(HashSet<Wire> allWires){
 		HashSet<Node> allNodes = new HashSet<Node>();
-
-
+		int count = 0;
+		
 		
 		for(Wire w1:allWires){
 			if(w1.node==null){
-				w1.populateNodes(new Node());
+				w1.populateNodes(new Node(count++));
 				allNodes.add(w1.node);
 			}
 			for(Component c:w1.components){
