@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,7 +20,7 @@ import Commands.Command;
 import Commands.CommandListener;
 import Components.Component;
 
-public class EditComponent extends JFrame implements ActionListener{
+public class EditComponent extends JFrame implements ActionListener, KeyListener{
 	Model m;
 	Component c;
 	private int cID;
@@ -46,6 +48,7 @@ public class EditComponent extends JFrame implements ActionListener{
 		for(String key:c.getEditableFields().keySet()){
 			inner.add(new JLabel(key));
 			NumberField n=new NumberField();
+			n.addKeyListener(this);
 			n.setText(""+c.getEditableFields().get(key));
 			map.put(n, key);
 			inner.add(n);
@@ -54,16 +57,7 @@ public class EditComponent extends JFrame implements ActionListener{
 		this.setVisible(true);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		HashMap<String, Double> fields= new HashMap<String, Double>();
-		for(NumberField n:map.keySet()){
-			fields.put(map.get(n), n.getValue());
-		}
-		this.fireCommand(new Commands.EditComponent(c,fields));
-		this.dispose();
-		
-	}
+	
 
 	public void addCommandListener(CommandListener l){
 		cmdListeners.add(l);
@@ -72,5 +66,38 @@ public class EditComponent extends JFrame implements ActionListener{
 		for(CommandListener l: cmdListeners){
 			l.performCommand(c);
 		}
+	}
+	private void updateAndDispose(){
+		HashMap<String, Double> fields= new HashMap<String, Double>();
+		for(NumberField n:map.keySet()){
+			fields.put(map.get(n), n.getValue());
+		}
+		this.fireCommand(new Commands.EditComponent(c,fields));
+		this.dispose();
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		updateAndDispose();
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==KeyEvent.VK_ENTER)
+			updateAndDispose();
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
