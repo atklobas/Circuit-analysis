@@ -134,6 +134,7 @@ public class CircuitFrame extends JFrame{
 			if(!e.isConsumed()){
 				Wire temp=m.getWireAt(x, y);
 				if(e.getClickCount()>1&&temp!=null){
+					System.out.println(temp);
 					System.out.println(m.getVoltageAt(temp));
 					
 				}

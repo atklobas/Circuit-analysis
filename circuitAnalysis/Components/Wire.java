@@ -12,9 +12,17 @@ public class Wire {
 	private int x1, y1, x2, y2;
 	private boolean horizontal=false;
 	public Node getNode(){
+		if(node==null){
+			System.out.println("this wire has no node"+"("+x1+","+y1+")"+"("+x2+","+y2+")");
+			System.out.println(wires);
+		}
+		
 		return node;
 	}
 
+	public String toString(){
+		return "wire at ("+x1+","+y1+")"+"("+x2+","+y2+")";
+	}
 	public int getX1() {
 		return x1*Main.gridSize;
 	}
@@ -136,12 +144,13 @@ public class Wire {
 		
 		
 		for(Wire w1:allWires){
+			
 			if(w1.node==null){
 				w1.populateNodes(new Node(count++));
 				allNodes.add(w1.node);
 			}
+			
 			for(Component c:w1.components){
-				System.out.println(c);
 				w1.node.addComponent(c);
 			}
 		}

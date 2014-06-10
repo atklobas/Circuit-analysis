@@ -74,11 +74,21 @@ public class Main implements Model, CommandListener{
 	
 	public Main() throws IOException {
 	/*double[][] m={
-			{0.03, -0.01, -0.02, 0.0, 0.0},
-					{-0.01, 0.01, 0.0, 1.0, 0.0},
-					{-0.02, 0.0, 0.02, -1.0, 0.0},
-					{0.0, -1.0, 1.0, 0.0, 40.0},
-					{0.0, 1.0, 0.0, 0.0, 0.0}
+			{0.01, 0.0, 0.0, -0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0},
+			{0.0, 0.02, -0.01, 0.0, 0.0, -0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+			{0.0, -0.01, 0.02, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.01, 0.0, 0.0, 0.0, 0.0},
+			{-0.01, 0.0, 0.0, 0.02, 0.0, 0.0, 0.0, 0.0, 0.0, -0.01, 0.0, 0.0, 0.0, 0.0, 0.0},
+			{0.0, 0.0, 0.0, 0.0, 0.01, -0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0},
+			{0.0, -0.01, 0.0, 0.0, -0.01, 0.04, 0.0, 0.0, -0.02, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+			{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.02, 0.0, 0.0, 0.0, -0.01, 0.0, -0.01, 0.0, 0.0},
+			{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.02, 0.0, 0.0, 0.0, -0.01, -0.01, 0.0, 0.0},
+			{0.0, 0.0, 0.0, 0.0, 0.0, -0.02, 0.0, 0.0, 0.02, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+			{0.0, 0.0, 0.0, -0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.02, 0.0, -0.01, 0.0, 0.0, 0.0},
+			{0.0, 0.0, -0.01, 0.0, 0.0, 0.0, -0.01, 0.0, 0.0, 0.0, 0.02, 0.0, 0.0, 0.0, 0.0},
+			{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.01, 0.0, -0.01, 0.0, 0.02, 0.0, 0.0, 0.0},
+			{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.01, -0.01, 0.0, 0.0, 0.0, 0.0, 0.02, 0.0, 0.0},
+			{-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 40.0},
+			{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 	};
 	Matrix mat=new Matrix(m);
 	System.out.println(mat+"\n");
@@ -212,6 +222,9 @@ public class Main implements Model, CommandListener{
 			w.reset();
 		}
 		for(Wire w2: allWires){
+			if(w2.getX1()==15&&w2.getX2()==17&&w2.getY1()==15){
+				System.out.println("its here");
+			}
 			for(Wire w: allWires){
 				if(w!=w2&&w.intersects(w2)){
 					w.addWire(w2);
@@ -224,21 +237,21 @@ public class Main implements Model, CommandListener{
 			for(int[] pnt:c.getConnectionLocations()){
 				Wire temp=this.getWireAt(pnt[0]+c.getX(), pnt[1]+c.getY());
 				if(temp!=null){
-					System.out.println("adding "+temp+" to"+c +"at "+(pnt[0]+c.getX())+","+ (pnt[1]+c.getY()));
+					//System.out.println("adding "+temp+" to"+c +"at "+(pnt[0]+c.getX())+","+ (pnt[1]+c.getY()));
 					c.addWire(i, temp);
 					temp.addComponent(c);
+				}else{
+					System.out.println("error");
 				}
 				i++;
 			}
 		}
+		
+		
 		HashSet<Node> nodes=Wire.makeNodes(allWires);
-		for(Node n:nodes){
-			System.out.println(n);
-			for(Component c:n.getComponents()){
-				System.out.println("\t"+c);
-				
-			}
-		}
+		Node[] nO=new Node[nodes.size()];
+		for(Node n:nodes)nO[n.getID()]=n;
+		
 		int columns=nodes.size()+1;
 		int rows=nodes.size();
 		for(Renderable r:this.components){
@@ -246,6 +259,15 @@ public class Main implements Model, CommandListener{
 			columns+=c.getAdditionalVariables();
 			rows+=c.getAdditionalRows();
 		}
+		
+		for(Node n:nO){
+			System.out.println(n);
+			for(Component c:n.getComponents()){
+				System.out.println("\t"+c);
+				
+			}
+		}
+		
 		Matrix m=new Matrix(rows, columns);
 		int row=nodes.size();
 		int column=row;
@@ -255,14 +277,12 @@ public class Main implements Model, CommandListener{
 			column+=c.getAdditionalVariables();
 			row+=c.getAdditionalRows();
 		}
-		System.out.println(nodes.size());
+		System.out.println("numNodes="+nodes.size());
 		System.out.println(m+"\n");
-		org.la4j.matrix.dense.Basic2DMatrix mp= new org.la4j.matrix.dense.Basic2DMatrix(m.getMatrix());
 		m=m.rref2();
 		//mp.
-		//System.out.println(mp.r);
-		System.err.println("requesting"+of.getNode().getID());
-		System.err.flush();
+		System.out.println("final:\n"+m);
+		System.out.println("requesting"+of.getNode().getID());
 		return "voltage = "+m.getValue(of.getNode().getID(), m.getColumns()-1);
 		//return "min arraySize: "+rows+"X"+columns+" selected node: "+of.getNode().getID();
 	}

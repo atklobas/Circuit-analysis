@@ -20,6 +20,7 @@ public class Ground extends Component{
 	}
 	@Override
 	public int[][] getConnectionLocations() {
+		wire=null;
 		return new int[][]{{0,0}};
 	}
 	@Override
@@ -30,7 +31,7 @@ public class Ground extends Component{
 	@Override
 	public int addEquations(Matrix m, int row, int column) {
 		int col=this.wire.getNode().getID();
-		System.err.println("#"+col);
+		//System.err.println("#"+col);
 		m.add(row, col, 1);
 		return 0;
 	}

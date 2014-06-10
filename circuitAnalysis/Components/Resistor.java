@@ -28,7 +28,9 @@ public class Resistor extends Component{
 		return new Resistor(resistance);
 	}
 	public String toString(){
-		return resistance+" ohms";
+		//int node1=this.wires[0].getNode().getID();
+		//int node2=this.wires[1].getNode().getID();
+		return node1+"->"+resistance+" ohms ->"+node2;
 	}
 	private void setNode2(){
 		if(this.getAngle()==0){
@@ -52,6 +54,7 @@ public class Resistor extends Component{
 	}
 	@Override
 	public int[][] getConnectionLocations() {
+		this.wires=new Wire[2];
 		int[][] ret={{0,0},{node2[0]*Main.gridSize,node2[1]*Main.gridSize}};
 		return ret;
 	}
@@ -64,7 +67,7 @@ public class Resistor extends Component{
 	public int addEquations(Matrix m, int row, int column) {
 		int node1=this.wires[0].getNode().getID();
 		int node2=this.wires[1].getNode().getID();
-		System.err.println("#"+node1+","+node2);
+		//System.err.println("#"+node1+","+node2);
 		m.add(node1, node1, 1./this.resistance);
 		m.add(node1, node2, -1./this.resistance);
 		m.add(node2, node1, -1./this.resistance);

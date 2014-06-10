@@ -8,6 +8,10 @@ public class AmperageSource extends Component{
 	private static Sprite sprite;
 	private int[] node1 = new int[]{0,0}, node2 = new int[]{6,0};
 	Wire[] wires=new Wire[2];
+	double amprage;
+	public AmperageSource(){
+		amprage=4;
+	}
 	
 	private void setNode2(){
 		if(this.getAngle()==0){
@@ -55,7 +59,10 @@ public class AmperageSource extends Component{
 	}
 	@Override
 	public int addEquations(Matrix m, int row, int column) {
-		// TODO Auto-generated method stub
+		int node1=this.wires[0].getNode().getID();
+		int node2=this.wires[1].getNode().getID();
+		m.add(node1, m.getColumns()-1, -4);
+		m.add(node2, m.getColumns()-1, 4);
 		return 0;
 	}
 

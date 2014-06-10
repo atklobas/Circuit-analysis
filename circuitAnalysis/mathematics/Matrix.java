@@ -215,29 +215,41 @@ public class Matrix {
 	}
 	public Matrix rref2(){
 		Matrix m = new Matrix(this.matrix);
+		java.util.LinkedList<int[]> pivots=new java.util.LinkedList<int[]>();
 		int row=0;
 		for(int i=0;i<columns;i++ ){
 			if(refWorker(m,row,i)){
+				pivots.push(new int[]{row,i});
 				row++;
 			};
-			System.out.println(m+"\n"+row+","+i+"\n");
+			System.out.println("column="+i);
+			System.out.println(m);
+			
+		}
+		//clear floating point error remainders
+		
+		for(int[] p: pivots){
+			backSubstitute(m,p[0],p[1]);
 		}
 		for(int x=0;x<rows;x++){
 			for(int y=0;y<columns;y++){
-				if(Math.abs(m.matrix[x][y])<.0000000001){
-					m.matrix[x][y]=0;
-				}
+				//if(Math.abs(m.matrix[x][y])<.0000000001){
+					m.matrix[x][y]=Math.round(m.matrix[x][y]*1000000000)/1000000000.;
+				//}
 			}	
 		}
 		
+		return m;
 		
-		
-		return m.rref();
+	}
+	private void backSubstitute(Matrix m, int row, int column) {
+		for(int i=row-1;i>=0;i--){
+			m.scaleAndAdd(row, i, -m.matrix[i][column]);
+		}
 		
 	}
 	private boolean refWorker(Matrix m,int row, int column){
 		if(!findnonzero(m,row,column)){
-			System.out.println("no non-zero");
 			return false;
 		}
 			
@@ -252,7 +264,7 @@ public class Matrix {
 			if(m.matrix[i][column]!=0){
 				if(Math.abs(m.matrix[i][column])<.0000000000001){
 					m.matrix[i][column]=0;
-					return false;
+					continue;
 				}
 				m.swapRows(row, i);
 				m.scaleRow(row, 1./m.matrix[row][column]);

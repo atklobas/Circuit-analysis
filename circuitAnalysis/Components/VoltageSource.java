@@ -47,6 +47,7 @@ public class VoltageSource extends Component{
 
 	@Override
 	public int[][] getConnectionLocations() {
+		//this.wires=new Wire[2];
 		int[][] ret={{0,0},{node2[0]*Main.gridSize,node2[1]*Main.gridSize}};
 		return ret;
 	}
@@ -63,7 +64,7 @@ public class VoltageSource extends Component{
 	public int addEquations(Matrix m, int row, int column) {
 		int node1=this.wires[0].getNode().getID();
 		int node2=this.wires[1].getNode().getID();
-		System.err.println("##"+node1+","+node2);
+		//System.err.println("##"+node1+","+node2);
 		m.add(node1, column, 1);
 		m.add(node2, column, -1);
 		m.add(row, node2, 1);
