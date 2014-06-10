@@ -107,6 +107,7 @@ public class Wire {
 	
 	//this method assumes that a wire can only be vertical, horizontal, or a point.
 	public boolean pointInside(int x, int y){
+		
 		x/=Main.gridSize;
 		y/=Main.gridSize;
 		boolean vertical = false, horizontal = false;

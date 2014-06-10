@@ -154,9 +154,9 @@ public class Main implements Model, CommandListener{
 		this.allWires.remove(w);
 	}
 	public Wire getWireAt(int x, int y){
-		x=(x+this.gridSize/2)/gridSize*gridSize;
-		y=(y+this.gridSize/2)/gridSize*gridSize;
-		
+		//snaps to grid;
+		x=((x+this.gridSize/2)/gridSize)*gridSize;
+		y=((y+this.gridSize/2)/gridSize)*gridSize;
 		for(Wire w:allWires){
 			if(w.pointInside(x, y)){
 				
@@ -217,7 +217,6 @@ public class Main implements Model, CommandListener{
 	}
 	@Override
 	public String getVoltageAt(Wire of) {
-		
 		for(Wire w:allWires){
 			w.reset();
 		}
@@ -285,6 +284,17 @@ public class Main implements Model, CommandListener{
 		System.out.println("requesting"+of.getNode().getID());
 		return "voltage = "+m.getValue(of.getNode().getID(), m.getColumns()-1);
 		//return "min arraySize: "+rows+"X"+columns+" selected node: "+of.getNode().getID();
+	}
+
+	@Override
+	public int getComponentNumber(Component p) {
+		return this.components.indexOf(p);
+	}
+
+	@Override
+	public Component getComponentByNumber(int n) {
+		if(n<1||n>components.size()-1) return null;
+		return (Component)components.get(n);
 	}
 
 	

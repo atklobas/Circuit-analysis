@@ -1,5 +1,7 @@
 package Components;
 
+import java.util.HashMap;
+
 import mathematics.Matrix;
 import circuitAnalysis.Main;
 import resources.Sprite;
@@ -11,12 +13,12 @@ public class Resistor extends Component{
 	public static void setSprite(Sprite sprite){
 		Resistor.sprite=sprite;
 	}
-	private double resistance;
+	//private double resistance;
 	public Resistor(){
 		this(100);
 	}
 	public Resistor(double resistance) {
-		this.resistance=resistance;
+		fields.put("Resistance", resistance);
 	}
 
 	@Override
@@ -25,12 +27,12 @@ public class Resistor extends Component{
 	}
 	
 	public Resistor Clone(){
-		return new Resistor(resistance);
+		return new Resistor(fields.get("Resistance"));
 	}
 	public String toString(){
 		//int node1=this.wires[0].getNode().getID();
 		//int node2=this.wires[1].getNode().getID();
-		return node1+"->"+resistance+" ohms ->"+node2;
+		return node1+"->"+fields.get("Resistance")+" ohms ->"+node2;
 	}
 	private void setNode2(){
 		if(this.getAngle()==0){
@@ -68,14 +70,15 @@ public class Resistor extends Component{
 		int node1=this.wires[0].getNode().getID();
 		int node2=this.wires[1].getNode().getID();
 		//System.err.println("#"+node1+","+node2);
-		m.add(node1, node1, 1./this.resistance);
-		m.add(node1, node2, -1./this.resistance);
-		m.add(node2, node1, -1./this.resistance);
-		m.add(node2, node2, 1./this.resistance);
+		m.add(node1, node1, 1./this.fields.get("Resistance"));
+		m.add(node1, node2, -1./this.fields.get("Resistance"));
+		m.add(node2, node1, -1./this.fields.get("Resistance"));
+		m.add(node2, node2, 1./this.fields.get("Resistance"));
 		return 1;
 	}
 	public void setResistance(double r){
-		this.resistance=r;
+		fields.put("Resistance", r);
 	}
+
 
 }

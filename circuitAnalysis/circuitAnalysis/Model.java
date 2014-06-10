@@ -14,4 +14,6 @@ public interface Model {
 	public void removeWire(Wire w);
 	public Wire getWireAt(int x, int y);
 	public String getVoltageAt(Wire temp);
+	public int getComponentNumber(Component p);
+	public Component getComponentByNumber(int n);
 }

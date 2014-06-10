@@ -132,24 +132,30 @@ public class CircuitFrame extends JFrame{
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if(!e.isConsumed()){
-				Wire temp=m.getWireAt(x, y);
-				if(e.getClickCount()>1&&temp!=null){
-					System.out.println(temp);
-					System.out.println(m.getVoltageAt(temp));
-					
-				}
+				
 				moving=true;
 				selected=m.getComponentAt(e.getX()+canvas.getCenterX(), e.getY()+canvas.getCenterY());
 				if(selected!=null){
 					xoff=(e.getX()-selected.getX());
 					yoff=(e.getY()-selected.getY());
-					if(e.getClickCount()>1 &&selected instanceof Resistor){
-						String s = (String)JOptionPane.showInputDialog("resistance");
-						((Resistor)selected).setResistance(Double.parseDouble(s));
+					
+					if(e.getClickCount()>1 &&selected instanceof Component){
+						EditComponent edit=new EditComponent(m,(Component)selected);
+						for(CommandListener m: cmdListeners){
+							edit.addCommandListener(m);
+						}
+						//String s = (String)JOptionPane.showInputDialog("resistance");
+						//((Resistor)selected).setResistance(Double.parseDouble(s));
 					}
 				}else{
 					this.x=e.getX();
 					this.y=e.getY();
+					Wire temp=m.getWireAt(x, y);
+					if(e.getClickCount()>1&&temp!=null){
+						System.out.println(temp);
+						System.out.println(m.getVoltageAt(temp));
+						
+					}
 					//wirecmd=new CreateWire(e.getX()+canvas.getCenterX(), e.getY()+canvas.getCenterY());
 				}
 			}

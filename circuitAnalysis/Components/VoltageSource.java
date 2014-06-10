@@ -1,5 +1,7 @@
 package Components;
 
+import java.util.HashMap;
+
 import mathematics.Matrix;
 import circuitAnalysis.Main;
 import resources.Sprite;
@@ -8,7 +10,10 @@ public class VoltageSource extends Component{
 	private static Sprite sprite;
 	private int[] node1 = new int[]{0,0}, node2 = new int[]{6,0};
 	Wire[] wires=new Wire[2];
-	private double voltage=40;
+	
+	public VoltageSource(){
+		fields.put("Voltage", 40.);
+	}
 	public static void setSprite(Sprite sprite){
 		VoltageSource.sprite=sprite;
 	}
@@ -57,7 +62,7 @@ public class VoltageSource extends Component{
 		wires[con]=w;
 	}
 	public String toString(){
-		return this.voltage+" volts";
+		return this.fields.get("Voltage")+" volts";
 	}
 
 	@Override
@@ -69,7 +74,7 @@ public class VoltageSource extends Component{
 		m.add(node2, column, -1);
 		m.add(row, node2, 1);
 		m.add(row, node1, -1);
-		m.add(row, m.getColumns()-1, this.voltage);
+		m.add(row, m.getColumns()-1, this.fields.get("Voltage"));
 		return 1;
 	}
 	public int getAdditionalVariables() {
@@ -78,4 +83,5 @@ public class VoltageSource extends Component{
 	public int getAdditionalRows() {
 		return 1;
 	}
+	
 }

@@ -1,5 +1,7 @@
 package Components;
 
+import java.util.HashMap;
+
 import mathematics.Matrix;
 import circuitAnalysis.Main;
 import resources.Renderable;
@@ -8,6 +10,7 @@ import resources.Sprite;
 public abstract class Component implements Renderable, Cloneable{
 	int x,y;
 	private int rotation=0;
+	protected HashMap<String, Double> fields=new HashMap<String, Double>();
 	public Component(){
 		this.x=0;
 		this.y=0;
@@ -109,5 +112,9 @@ public abstract class Component implements Renderable, Cloneable{
 	}
 	public int getAdditionalRows() {
 		return 0;
+	}
+
+	public HashMap<String, Double> getEditableFields() {
+		return fields;
 	}
 }

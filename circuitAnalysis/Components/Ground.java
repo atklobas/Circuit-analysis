@@ -1,5 +1,7 @@
 package Components;
 
+import java.util.HashMap;
+
 import mathematics.Matrix;
 import resources.Sprite;
 
