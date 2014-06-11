@@ -66,8 +66,20 @@ public class OpAmp extends Component{
 	}
 	@Override
 	public int addEquations(Matrix m, int row, int column) {
-		// TODO Auto-generated method stub
+		int inverting=wires[0].getNode().getID();
+		int nonInverting=wires[1].getNode().getID();
+		int out=wires[2].getNode().getID();
+		m.add(row, inverting, 1);
+		m.add(row, nonInverting, -1);
+		m.add(row, m.getColumns()-1, 0);
+		m.add(out, column, 1);
 		return 0;
+	}
+	public int getAdditionalVariables() {
+		return 1;
+	}
+	public int getAdditionalRows() {
+		return 1;
 	}
 
 }
