@@ -216,10 +216,27 @@ public class Main implements Model, CommandListener{
 		return null;
 	}
 	@Override
-	public String getVoltageAt(Wire of) {
+	public double getVoltageAt(Wire of) {
+		HashSet<Wire> tempWires= new HashSet<Wire>();
 		for(Wire w:allWires){
 			w.reset();
 		}
+		
+		for(Renderable r:this.components){
+			Component c=(Component)r;
+			int i=0;
+			for(int[] pnt:c.getConnectionLocations()){
+				Wire temp=this.getWireAt(pnt[0]+c.getX(), pnt[1]+c.getY());
+				if(temp==null){
+					temp=new Wire(pnt[0]+c.getX(), pnt[1]+c.getY(),pnt[0]+c.getX(), pnt[1]+c.getY());
+					tempWires.add(temp);
+				}
+				c.addWire(i, temp);
+				temp.addComponent(c);
+				i++;
+			}
+		}
+		allWires.addAll(tempWires);
 		for(Wire w2: allWires){
 			if(w2.getX1()==15&&w2.getX2()==17&&w2.getY1()==15){
 				System.out.println("its here");
@@ -230,24 +247,11 @@ public class Main implements Model, CommandListener{
 				}
 			}
 		}
-		for(Renderable r:this.components){
-			Component c=(Component)r;
-			int i=0;
-			for(int[] pnt:c.getConnectionLocations()){
-				Wire temp=this.getWireAt(pnt[0]+c.getX(), pnt[1]+c.getY());
-				if(temp!=null){
-					//System.out.println("adding "+temp+" to"+c +"at "+(pnt[0]+c.getX())+","+ (pnt[1]+c.getY()));
-					c.addWire(i, temp);
-					temp.addComponent(c);
-				}else{
-					System.out.println("error");
-				}
-				i++;
-			}
-		}
+		
 		
 		
 		HashSet<Node> nodes=Wire.makeNodes(allWires);
+		allWires.removeAll(tempWires);
 		Node[] nO=new Node[nodes.size()];
 		for(Node n:nodes)nO[n.getID()]=n;
 		
@@ -282,7 +286,7 @@ public class Main implements Model, CommandListener{
 		//mp.
 		System.out.println("final:\n"+m);
 		System.out.println("requesting"+of.getNode().getID());
-		return "voltage = "+m.getValue(of.getNode().getID(), m.getColumns()-1);
+		return m.getValue(of.getNode().getID(), m.getColumns()-1);
 		//return "min arraySize: "+rows+"X"+columns+" selected node: "+of.getNode().getID();
 	}
 

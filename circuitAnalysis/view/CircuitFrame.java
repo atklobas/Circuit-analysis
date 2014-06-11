@@ -135,12 +135,14 @@ public class CircuitFrame extends JFrame{
 				
 				moving=true;
 				selected=m.getComponentAt(e.getX()+canvas.getCenterX(), e.getY()+canvas.getCenterY());
+				
 				if(selected!=null){
 					xoff=(e.getX()-selected.getX());
 					yoff=(e.getY()-selected.getY());
 					
 					if(e.getClickCount()>1 &&selected instanceof Component){
 						EditComponent edit=new EditComponent(m,(Component)selected);
+						moving =false;
 						for(CommandListener m: cmdListeners){
 							edit.addCommandListener(m);
 						}
@@ -150,10 +152,10 @@ public class CircuitFrame extends JFrame{
 				}else{
 					this.x=e.getX();
 					this.y=e.getY();
-					Wire temp=m.getWireAt(x, y);
+					Wire temp=m.getWireAt(x+canvas.getCenterX(), y+canvas.getCenterY());
 					if(e.getClickCount()>1&&temp!=null){
-						System.out.println(temp);
-						System.out.println(m.getVoltageAt(temp));
+						moving=false;
+						JOptionPane.showMessageDialog(frame, "The Voltage is "+m.getVoltageAt(temp)+"Volts");
 						
 					}
 					//wirecmd=new CreateWire(e.getX()+canvas.getCenterX(), e.getY()+canvas.getCenterY());

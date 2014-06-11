@@ -32,13 +32,16 @@ public class Ground extends Component{
 	}
 	@Override
 	public int addEquations(Matrix m, int row, int column) {
-		int col=this.wire.getNode().getID();
+		int node1=this.wire.getNode().getID();
 		//System.err.println("#"+col);
-		m.add(row, col, 1);
+		m.add(node1, column, 1);
+		m.add(row, node1, 1);
 		return 0;
 	}
 
 	public int getAdditionalRows() {
+		return 1;
+	}public int getAdditionalVariables() {
 		return 1;
 	}
 }
